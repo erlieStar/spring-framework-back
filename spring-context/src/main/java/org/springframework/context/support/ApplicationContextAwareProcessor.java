@@ -101,6 +101,7 @@ class ApplicationContextAwareProcessor implements BeanPostProcessor {
 
 	private void invokeAwareInterfaces(Object bean) {
 		if (bean instanceof Aware) {
+			// 如果bean实现了EnvironmentAware这个接口，则把ConfigurableEnvironment这个对象给它
 			if (bean instanceof EnvironmentAware) {
 				((EnvironmentAware) bean).setEnvironment(this.applicationContext.getEnvironment());
 			}

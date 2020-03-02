@@ -7,7 +7,10 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 public class Main {
 
 	public static void main(String[] args) {
-		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
+		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
+		context.register(AppConfig.class);
+		// 初始化spring环境
+		context.refresh();
 		UserDao userDao = context.getBean(UserDao.class);
 		String str = userDao.getUser();
 		System.out.println(str);
