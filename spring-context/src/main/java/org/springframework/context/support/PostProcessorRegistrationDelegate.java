@@ -56,9 +56,13 @@ final class PostProcessorRegistrationDelegate {
 
 		if (beanFactory instanceof BeanDefinitionRegistry) {
 			BeanDefinitionRegistry registry = (BeanDefinitionRegistry) beanFactory;
+			// 自己定义的BeanFactoryPostProcessor
 			List<BeanFactoryPostProcessor> regularPostProcessors = new ArrayList<>();
+			// 自己定义的BeanDefinitionRegistryPostProcessor
 			List<BeanDefinitionRegistryPostProcessor> registryProcessors = new ArrayList<>();
 
+			// 将实现BeanFactoryPostProcessor和BeanDefinitionRegistryPostProcessor的类放到2个list中
+			// 因为BeanDefinitionRegistryPostProcessor继承了BeanFactoryPostProcessor，功能上做了增强
 			for (BeanFactoryPostProcessor postProcessor : beanFactoryPostProcessors) {
 				if (postProcessor instanceof BeanDefinitionRegistryPostProcessor) {
 					BeanDefinitionRegistryPostProcessor registryProcessor =
@@ -75,6 +79,7 @@ final class PostProcessorRegistrationDelegate {
 			// uninitialized to let the bean factory post-processors apply to them!
 			// Separate between BeanDefinitionRegistryPostProcessors that implement
 			// PriorityOrdered, Ordered, and the rest.
+			// spring自己定义的BeanDefinitionRegistryPostProcessor
 			List<BeanDefinitionRegistryPostProcessor> currentRegistryProcessors = new ArrayList<>();
 
 			// First, invoke the BeanDefinitionRegistryPostProcessors that implement PriorityOrdered.
@@ -87,7 +92,11 @@ final class PostProcessorRegistrationDelegate {
 				}
 			}
 			sortPostProcessors(currentRegistryProcessors, beanFactory);
+			// 合并list, 因为还有自己的
 			registryProcessors.addAll(currentRegistryProcessors);
+			// 执行BeanDefinitionRegistryPostProcessor接口的postProcessBeanDefinitionRegistry方法
+			// 即运行扩展方法
+			// 执行完成所有的BeanDefinitionRegistryPostProcessor
 			invokeBeanDefinitionRegistryPostProcessors(currentRegistryProcessors, registry);
 			currentRegistryProcessors.clear();
 
@@ -122,6 +131,7 @@ final class PostProcessorRegistrationDelegate {
 				currentRegistryProcessors.clear();
 			}
 
+			// 开始执行BeanFactoryPostProcessor的回调
 			// Now, invoke the postProcessBeanFactory callback of all processors handled so far.
 			invokeBeanFactoryPostProcessors(registryProcessors, beanFactory);
 			invokeBeanFactoryPostProcessors(regularPostProcessors, beanFactory);

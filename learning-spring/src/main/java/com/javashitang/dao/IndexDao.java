@@ -5,9 +5,9 @@ import org.springframework.stereotype.Repository;
 import javax.annotation.PostConstruct;
 
 @Repository
-public class UserDao {
+public class IndexDao {
 
-	public UserDao() {
+	public IndexDao() {
 		System.out.println("构造");
 	}
 

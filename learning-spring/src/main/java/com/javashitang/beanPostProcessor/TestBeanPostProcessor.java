@@ -10,7 +10,7 @@ public class TestBeanPostProcessor implements BeanPostProcessor, PriorityOrdered
 
 	@Override
 	public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
-		if (beanName.equals("userDao")) {
+		if (beanName.equals("indexDao")) {
 			System.out.println("BeforeInitialization");
 		}
 		return bean;
@@ -18,7 +18,7 @@ public class TestBeanPostProcessor implements BeanPostProcessor, PriorityOrdered
 
 	@Override
 	public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
-		if (beanName.equals("userDao")) {
+		if (beanName.equals("indexDao")) {
 			System.out.println("AfterInitialization");
 		}
 		return bean;

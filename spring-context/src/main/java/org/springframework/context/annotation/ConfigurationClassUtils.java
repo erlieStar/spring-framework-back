@@ -85,9 +85,11 @@ abstract class ConfigurationClassUtils {
 		}
 
 		AnnotationMetadata metadata;
+		// 是否是AnnotatedBeanDefinition
 		if (beanDef instanceof AnnotatedBeanDefinition &&
 				className.equals(((AnnotatedBeanDefinition) beanDef).getMetadata().getClassName())) {
 			// Can reuse the pre-parsed metadata from the given BeanDefinition...
+			// 从不同的类中拿元数据
 			metadata = ((AnnotatedBeanDefinition) beanDef).getMetadata();
 		}
 		else if (beanDef instanceof AbstractBeanDefinition && ((AbstractBeanDefinition) beanDef).hasBeanClass()) {
@@ -109,10 +111,16 @@ abstract class ConfigurationClassUtils {
 			}
 		}
 
+		// 判断是否加了@Configuration注解
+		// 如果存在则spring认为它是一个全注解的类
 		if (isFullConfigurationCandidate(metadata)) {
+			// 设置属性为 full
 			beanDef.setAttribute(CONFIGURATION_CLASS_ATTRIBUTE, CONFIGURATION_CLASS_FULL);
 		}
+		// 判断是否加了@Component，@ComponentScan，@Import，@ImportResource注解
+		// 如果不存在@Configuration注解则认为是一个部分注解类
 		else if (isLiteConfigurationCandidate(metadata)) {
+			// 设置属性为 lite
 			beanDef.setAttribute(CONFIGURATION_CLASS_ATTRIBUTE, CONFIGURATION_CLASS_LITE);
 		}
 		else {
