@@ -20,7 +20,8 @@ public class Main {
 //		System.out.println(indexDao.hashCode() + " " + indexDao1.hashCode());
 //		context.getBean(IndexDao3.class).query();
 
-		Dao dao = (Dao) context.getBean("indexDao2");
+		Dao dao = (Dao) context.getBean("indexDao");
 		dao.query();
+		context.close();
 	}
 }

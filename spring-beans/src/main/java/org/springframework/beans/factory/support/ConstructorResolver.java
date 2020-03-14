@@ -114,7 +114,11 @@ class ConstructorResolver {
 		BeanWrapperImpl bw = new BeanWrapperImpl();
 		this.beanFactory.initBeanWrapper(bw);
 
+		// 使用构造方法new对象需要三个参数
+		// Constructor，parameterTypes，parameterValues
+		// 用的构造方法
 		Constructor<?> constructorToUse = null;
+		// 构造方法使用的参数
 		ArgumentsHolder argsHolderToUse = null;
 		Object[] argsToUse = null;
 
@@ -124,6 +128,7 @@ class ConstructorResolver {
 		else {
 			Object[] argsToResolve = null;
 			synchronized (mbd.constructorArgumentLock) {
+				// 获取已经解析的构造方法，一般不会有，因为没有set
 				constructorToUse = (Constructor<?>) mbd.resolvedConstructorOrFactoryMethod;
 				if (constructorToUse != null && mbd.constructorArgumentsResolved) {
 					// Found a cached constructor...
@@ -140,10 +145,14 @@ class ConstructorResolver {
 
 		if (constructorToUse == null) {
 			// Need to resolve the constructor.
+			// 前面传了一个构造方法或者通过构造方法注入
 			boolean autowiring = (chosenCtors != null ||
 					mbd.getResolvedAutowireMode() == AutowireCapableBeanFactory.AUTOWIRE_CONSTRUCTOR);
 			ConstructorArgumentValues resolvedValues = null;
 
+			// 定义了最小参数个数
+			// 如果你给构造方法的参数列表给定了具体的值
+			// 那么这些值的个数就是构造方法参数的个数
 			int minNrOfArgs;
 			if (explicitArgs != null) {
 				minNrOfArgs = explicitArgs.length;
@@ -151,6 +160,7 @@ class ConstructorResolver {
 			else {
 				ConstructorArgumentValues cargs = mbd.getConstructorArgumentValues();
 				resolvedValues = new ConstructorArgumentValues();
+				// spring构造方法有给值，则最小参数个数为给的值的个数
 				minNrOfArgs = resolveConstructorArguments(beanName, mbd, bw, cargs, resolvedValues);
 			}
 
@@ -168,19 +178,30 @@ class ConstructorResolver {
 							"] from ClassLoader [" + beanClass.getClassLoader() + "] failed", ex);
 				}
 			}
+			/**
+			 * 有限访问权限，继而参数个数
+			 * 1 public Test(Object o1, Object o2, Object o3)
+			 * 2 public Test(Object o1, Object o2)
+			 * 3 public Test(Object o1)
+			 * 4 protected Test(Integer i, Object o1, Object o2, Object o3)
+			 * 5 protected Test(Integer i, Object o1, Object o2)
+			 */
 			AutowireUtils.sortConstructors(candidates);
 			int minTypeDiffWeight = Integer.MAX_VALUE;
 			Set<Constructor<?>> ambiguousConstructors = null;
 			LinkedList<UnsatisfiedDependencyException> causes = null;
 
+			// 循环所有的构造方法
 			for (Constructor<?> candidate : candidates) {
 				Class<?>[] paramTypes = candidate.getParameterTypes();
 
+				// 1.确定了构造方法，直接break
 				if (constructorToUse != null && argsToUse.length > paramTypes.length) {
 					// Already found greedy constructor that can be satisfied ->
 					// do not look any further, there are only less greedy constructors left.
 					break;
 				}
+				// 参数列表小于最小参数，开始下一次循环
 				if (paramTypes.length < minNrOfArgs) {
 					continue;
 				}
@@ -472,6 +493,10 @@ class ConstructorResolver {
 							if (pnd != null) {
 								paramNames = pnd.getParameterNames(candidate);
 							}
+							// 这个方法比较复杂
+							// 因为spring只能提供字符串的参数值
+							// 故而需要进行转换
+							// argsHolde包含的值就是转换之后的
 							argsHolder = createArgumentArray(
 									beanName, mbd, resolvedValues, bw, paramTypes, paramNames, candidate, autowiring);
 						}

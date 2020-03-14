@@ -132,6 +132,9 @@ import org.springframework.util.StringValueResolver;
  * the latter configuration will override the former for properties wired through
  * both approaches.
  *
+ * 主要处理@Resource,@PostConstruct,@PreDestroy注解
+ * Resource是由他自己完成，其他两个是由他的父类完成
+ *
  * @author Juergen Hoeller
  * @since 2.5
  * @see #setAlwaysUseJndiLookup

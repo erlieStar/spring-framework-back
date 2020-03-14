@@ -8,7 +8,7 @@ import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.core.PriorityOrdered;
 import org.springframework.stereotype.Component;
 
-@Component
+//@Component
 public class MyBeanPostProcessor implements BeanFactoryPostProcessor {
 
 	@Override
