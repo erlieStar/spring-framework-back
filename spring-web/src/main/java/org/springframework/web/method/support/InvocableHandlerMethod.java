@@ -236,7 +236,7 @@ public class InvocableHandlerMethod extends HandlerMethod {
 	 * Assert that the target bean class is an instance of the class where the given
 	 * method is declared. In some cases the actual controller instance at request-
 	 * processing time may be a JDK dynamic proxy (lazy initialization, prototype
-	 * beans, and others). {@code @Controller}'s that require proxying should prefer
+	 * beans, and others). {@code @controller}'s that require proxying should prefer
 	 * class-based proxy mechanisms.
 	 */
 	private void assertTargetBean(Method method, Object targetBean, Object[] args) {
@@ -274,7 +274,7 @@ public class InvocableHandlerMethod extends HandlerMethod {
 	protected String getDetailedErrorMessage(String text) {
 		StringBuilder sb = new StringBuilder(text).append("\n");
 		sb.append("HandlerMethod details: \n");
-		sb.append("Controller [").append(getBeanType().getName()).append("]\n");
+		sb.append("controller [").append(getBeanType().getName()).append("]\n");
 		sb.append("Method [").append(getBridgedMethod().toGenericString()).append("]\n");
 		return sb.toString();
 	}

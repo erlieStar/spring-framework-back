@@ -33,7 +33,7 @@ import org.springframework.web.util.WebUtils;
  * property editors.
  *
  * <p>Can also be used for manual data binding in custom web controllers:
- * for example, in a plain Controller implementation or in a MultiActionController
+ * for example, in a plain controller implementation or in a MultiActionController
  * handler method. Simply instantiate a ServletRequestDataBinder for each binding
  * process, and invoke {@code bind} with the current ServletRequest as argument:
  *

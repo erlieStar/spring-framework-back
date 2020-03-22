@@ -36,7 +36,7 @@ import org.springframework.web.servlet.FlashMap;
  * {@link RedirectAttributes} to store flash attributes and they will be
  * automatically propagated to the "output" FlashMap of the current request.
  *
- * <p>Example usage in an {@code @Controller}:
+ * <p>Example usage in an {@code @controller}:
  * <pre class="code">
  * &#064;RequestMapping(value = "/accounts", method = RequestMethod.POST)
  * public String handle(Account account, BindingResult result, RedirectAttributes redirectAttrs) {

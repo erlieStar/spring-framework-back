@@ -37,6 +37,8 @@ import org.springframework.web.servlet.ModelAndView;
  * @see org.springframework.web.HttpRequestHandler
  * @see LastModified
  * @see SimpleControllerHandlerAdapter
+ *
+ * 多用于处理静态资源
  */
 public class HttpRequestHandlerAdapter implements HandlerAdapter {
 
@@ -54,6 +56,7 @@ public class HttpRequestHandlerAdapter implements HandlerAdapter {
 		return null;
 	}
 
+	// 获取资源最后一次修改时间
 	@Override
 	public long getLastModified(HttpServletRequest request, Object handler) {
 		if (handler instanceof LastModified) {

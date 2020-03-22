@@ -29,7 +29,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.WebUtils;
 
 /**
- * Spring Controller implementation that forwards to a named servlet,
+ * Spring controller implementation that forwards to a named servlet,
  * i.e. the "servlet-name" in web.xml rather than a URL path mapping.
  * A target servlet doesn't even need a "servlet-mapping" in web.xml
  * in the first place: A "servlet" declaration is sufficient.

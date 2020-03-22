@@ -211,7 +211,7 @@ public class MethodMessageHandlerTests {
 
 		@Override
 		protected boolean isHandler(Class<?> beanType) {
-			return beanType.getName().contains("Controller");
+			return beanType.getName().contains("controller");
 		}
 
 		@Override

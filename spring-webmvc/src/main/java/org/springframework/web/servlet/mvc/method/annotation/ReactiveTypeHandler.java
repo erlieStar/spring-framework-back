@@ -191,7 +191,7 @@ class ReactiveTypeHandler {
 							"Please, configure a TaskExecutor in the MVC config under \"async support\".\n" +
 							"The " + executorTypeName + " currently in use is not suitable under load.\n" +
 							"-------------------------------\n" +
-							"Controller:\t" + returnType.getContainingClass().getName() + "\n" +
+							"controller:\t" + returnType.getContainingClass().getName() + "\n" +
 							"Method:\t\t" + returnType.getMethod().getName() + "\n" +
 							"Returning:\t" + ResolvableType.forMethodParameter(returnType).toString() + "\n" +
 							"!!!");

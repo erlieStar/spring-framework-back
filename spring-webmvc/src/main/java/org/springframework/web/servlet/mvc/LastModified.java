@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletRequest;
  * Same contract as for the Servlet API's {@code getLastModified} method.
  *
  * <p>Delegated to by a {@link org.springframework.web.servlet.HandlerAdapter#getLastModified}
- * implementation. By default, any Controller or HttpRequestHandler within Spring's
+ * implementation. By default, any controller or HttpRequestHandler within Spring's
  * default framework can implement this interface to enable last-modified checking.
  *
  * <p><b>Note:</b> Alternative handler implementation approaches have different

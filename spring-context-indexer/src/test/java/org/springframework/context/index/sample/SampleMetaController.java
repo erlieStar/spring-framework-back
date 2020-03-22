@@ -17,7 +17,7 @@
 package org.springframework.context.index.sample;
 
 /**
- * Test candidate for a {@code Controller} defined using a meta-annotation.
+ * Test candidate for a {@code controller} defined using a meta-annotation.
  *
  * @author Stephane Nicoll
  */

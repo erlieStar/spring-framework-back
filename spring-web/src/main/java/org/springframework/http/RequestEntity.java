@@ -27,7 +27,7 @@ import org.springframework.util.ObjectUtils;
 
 /**
  * Extension of {@link HttpEntity} that adds a {@linkplain HttpMethod method} and
- * {@linkplain URI uri}. Used in {@code RestTemplate} and {@code @Controller} methods.
+ * {@linkplain URI uri}. Used in {@code RestTemplate} and {@code @controller} methods.
  *
  * <p>In {@code RestTemplate}, this class is used as parameter in
  * {@link org.springframework.web.client.RestTemplate#exchange(RequestEntity, Class) exchange()}:
@@ -47,7 +47,7 @@ import org.springframework.util.ObjectUtils;
  * RequestEntity&lt;MyRequest&gt; request = RequestEntity.post(uri).accept(MediaType.APPLICATION_JSON).body(body);
  * </pre>
  *
- * <p>Can also be used in Spring MVC, as a parameter in a @Controller method:
+ * <p>Can also be used in Spring MVC, as a parameter in a @controller method:
  * <pre class="code">
  * &#64;RequestMapping("/handle")
  * public void handle(RequestEntity&lt;String&gt; request) {

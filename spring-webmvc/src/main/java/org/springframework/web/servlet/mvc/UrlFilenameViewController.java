@@ -25,7 +25,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.HandlerMapping;
 
 /**
- * Simple {@code Controller} implementation that transforms the virtual
+ * Simple {@code controller} implementation that transforms the virtual
  * path of a URL into a view name and returns that view.
  *
  * <p>Can optionally prepend a {@link #setPrefix prefix} and/or append a

@@ -57,6 +57,8 @@ public interface LocaleResolver {
 	 * Can return a default locale as fallback in any case.
 	 * @param request the request to resolve the locale for
 	 * @return the current locale (never {@code null})
+	 *
+	 * 解析请求对应的Locale
 	 */
 	Locale resolveLocale(HttpServletRequest request);
 
@@ -67,6 +69,8 @@ public interface LocaleResolver {
 	 * @param locale the new locale, or {@code null} to clear the locale
 	 * @throws UnsupportedOperationException if the LocaleResolver
 	 * implementation does not support dynamic changing of the locale
+	 *
+	 * 设置请求和响应对应的Locale
 	 */
 	void setLocale(HttpServletRequest request, @Nullable HttpServletResponse response, @Nullable Locale locale);
 

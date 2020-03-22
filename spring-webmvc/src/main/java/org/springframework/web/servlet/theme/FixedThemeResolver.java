@@ -33,6 +33,8 @@ import org.springframework.lang.Nullable;
  * @author Juergen Hoeller
  * @since 17.06.2003
  * @see #setDefaultThemeName
+ *
+ * 固定主题解析器
  */
 public class FixedThemeResolver extends AbstractThemeResolver {
 

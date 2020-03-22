@@ -46,7 +46,7 @@ import static org.junit.Assert.*;
 
 /**
  * Data binding and type conversion related integration tests for
- * {@code @Controller}-annotated classes.
+ * {@code @controller}-annotated classes.
  *
  * @author Rossen Stoyanchev
  */

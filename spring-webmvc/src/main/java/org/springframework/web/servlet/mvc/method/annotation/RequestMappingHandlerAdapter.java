@@ -396,7 +396,7 @@ public class RequestMappingHandlerAdapter extends AbstractHandlerMethodAdapter
 
 	/**
 	 * Set the default {@link AsyncTaskExecutor} to use when a controller method
-	 * return a {@link Callable}. Controller methods can override this default on
+	 * return a {@link Callable}. controller methods can override this default on
 	 * a per-request basis by returning an {@link WebAsyncTask}.
 	 * <p>By default a {@link SimpleAsyncTaskExecutor} instance is used.
 	 * It's recommended to change that default in production as the simple executor

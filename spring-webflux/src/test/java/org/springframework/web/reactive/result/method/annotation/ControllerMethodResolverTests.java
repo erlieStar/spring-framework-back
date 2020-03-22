@@ -127,7 +127,7 @@ public class ControllerMethodResolverTests {
 		List<InvocableHandlerMethod> methods =
 				this.methodResolver.getModelAttributeMethods(this.handlerMethod);
 
-		assertEquals("Expected one each from Controller + ControllerAdvice", 2, methods.size());
+		assertEquals("Expected one each from controller + ControllerAdvice", 2, methods.size());
 		InvocableHandlerMethod invocable = methods.get(0);
 		List<HandlerMethodArgumentResolver> resolvers = invocable.getResolvers();
 
@@ -165,7 +165,7 @@ public class ControllerMethodResolverTests {
 		List<SyncInvocableHandlerMethod> methods =
 				this.methodResolver.getInitBinderMethods(this.handlerMethod);
 
-		assertEquals("Expected one each from Controller + ControllerAdvice", 2, methods.size());
+		assertEquals("Expected one each from controller + ControllerAdvice", 2, methods.size());
 		SyncInvocableHandlerMethod invocable = methods.get(0);
 		List<SyncHandlerMethodArgumentResolver> resolvers = invocable.getResolvers();
 

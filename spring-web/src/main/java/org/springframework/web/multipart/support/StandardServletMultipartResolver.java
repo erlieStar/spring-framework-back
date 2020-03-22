@@ -80,6 +80,7 @@ public class StandardServletMultipartResolver implements MultipartResolver {
 	@Override
 	public boolean isMultipart(HttpServletRequest request) {
 		// Same check as in Commons FileUpload...
+		// 方法是post，并且contentType以multipart开头，则请求为Multipart
 		if (!"post".equalsIgnoreCase(request.getMethod())) {
 			return false;
 		}

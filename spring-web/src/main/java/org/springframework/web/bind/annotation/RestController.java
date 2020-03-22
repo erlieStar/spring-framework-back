@@ -27,7 +27,7 @@ import org.springframework.stereotype.Controller;
 
 /**
  * A convenience annotation that is itself annotated with
- * {@link Controller @Controller} and {@link ResponseBody @ResponseBody}.
+ * {@link Controller @controller} and {@link ResponseBody @ResponseBody}.
  * <p>
  * Types that carry this annotation are treated as controllers where
  * {@link RequestMapping @RequestMapping} methods assume

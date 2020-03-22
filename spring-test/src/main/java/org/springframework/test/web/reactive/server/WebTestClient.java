@@ -161,7 +161,7 @@ public interface WebTestClient {
 	// Static factory methods
 
 	/**
-	 * Use this server setup to test one `@Controller` at a time.
+	 * Use this server setup to test one `@controller` at a time.
 	 * This option loads the default configuration of
 	 * {@link org.springframework.web.reactive.config.EnableWebFlux @EnableWebFlux}.
 	 * There are builder methods to customize the Java config. The resulting

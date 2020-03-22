@@ -28,7 +28,7 @@ import org.springframework.util.ObjectUtils;
 
 /**
  * Extension of {@link HttpEntity} that adds a {@link HttpStatus} status code.
- * Used in {@code RestTemplate} as well {@code @Controller} methods.
+ * Used in {@code RestTemplate} as well {@code @controller} methods.
  *
  * <p>In {@code RestTemplate}, this class is returned by
  * {@link org.springframework.web.client.RestTemplate#getForEntity getForEntity()} and
@@ -40,7 +40,7 @@ import org.springframework.util.ObjectUtils;
  * HttpStatus statusCode = entity.getStatusCode();
  * </pre>
  *
- * <p>Can also be used in Spring MVC, as the return value from a @Controller method:
+ * <p>Can also be used in Spring MVC, as the return value from a @controller method:
  * <pre class="code">
  * &#64;RequestMapping("/handle")
  * public ResponseEntity&lt;String&gt; handle() {

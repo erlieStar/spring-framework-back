@@ -36,6 +36,8 @@ import org.springframework.web.servlet.ModelAndView;
  * @see Controller
  * @see LastModified
  * @see HttpRequestHandlerAdapter
+ *
+ * 对实现了Controller接口的处理器的支持
  */
 public class SimpleControllerHandlerAdapter implements HandlerAdapter {
 

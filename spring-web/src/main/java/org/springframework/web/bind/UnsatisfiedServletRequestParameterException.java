@@ -28,7 +28,7 @@ import org.springframework.util.StringUtils;
 /**
  * {@link ServletRequestBindingException} subclass that indicates an unsatisfied
  * parameter condition, as typically expressed using an {@code @RequestMapping}
- * annotation at the {@code @Controller} type level.
+ * annotation at the {@code @controller} type level.
  *
  * @author Juergen Hoeller
  * @since 3.0

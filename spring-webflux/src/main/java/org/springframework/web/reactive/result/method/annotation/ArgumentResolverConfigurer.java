@@ -23,7 +23,7 @@ import org.springframework.util.Assert;
 import org.springframework.web.reactive.result.method.HandlerMethodArgumentResolver;
 
 /**
- * Helps to configure resolvers for Controller method arguments.
+ * Helps to configure resolvers for controller method arguments.
  *
  * @author Rossen Stoyanchev
  * @since 5.0

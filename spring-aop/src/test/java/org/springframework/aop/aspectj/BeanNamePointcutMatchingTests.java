@@ -35,7 +35,7 @@ public class BeanNamePointcutMatchingTests {
 		assertMatch("someName", "bean(someName)");
 
 		// Spring bean names are less restrictive compared to AspectJ names (methods, types etc.)
-		// MVC Controller-kind
+		// MVC controller-kind
 		assertMatch("someName/someOtherName", "bean(someName/someOtherName)");
 		assertMatch("someName/foo/someOtherName", "bean(someName/*/someOtherName)");
 		assertMatch("someName/foo/bar/someOtherName", "bean(someName/*/someOtherName)");

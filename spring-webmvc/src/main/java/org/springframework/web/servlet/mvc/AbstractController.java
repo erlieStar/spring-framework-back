@@ -31,7 +31,7 @@ import org.springframework.web.util.WebUtils;
  * design pattern.
  *
  * <p><b><a name="workflow">Workflow
- * (<a href="Controller.html#workflow">and that defined by interface</a>):</b><br>
+ * (<a href="controller.html#workflow">and that defined by interface</a>):</b><br>
  * <ol>
  * <li>{@link #handleRequest(HttpServletRequest, HttpServletResponse) handleRequest()}
  * will be called by the DispatcherServlet</li>
@@ -47,7 +47,7 @@ import org.springframework.web.util.WebUtils;
  * </ol>
  *
  * <p><b><a name="config">Exposed configuration properties</a>
- * (<a href="Controller.html#config">and those defined by interface</a>):</b><br>
+ * (<a href="controller.html#config">and those defined by interface</a>):</b><br>
  * <table border="1">
  * <tr>
  * <td><b>name</b></th>

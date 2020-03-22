@@ -23,27 +23,27 @@ import org.springframework.lang.Nullable;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
- * Base Controller interface, representing a component that receives
+ * Base controller interface, representing a component that receives
  * {@code HttpServletRequest} and {@code HttpServletResponse}
  * instances just like a {@code HttpServlet} but is able to
  * participate in an MVC workflow. Controllers are comparable to the
  * notion of a Struts {@code Action}.
  *
- * <p>Any implementation of the Controller interface should be a
+ * <p>Any implementation of the controller interface should be a
  * <i>reusable, thread-safe</i> class, capable of handling multiple
  * HTTP requests throughout the lifecycle of an application. To be able to
- * configure a Controller easily, Controller implementations are encouraged
+ * configure a controller easily, controller implementations are encouraged
  * to be (and usually are) JavaBeans.
  *
  * <h3><a name="workflow">Workflow</a></h3>
  *
  * <p>After a {@code DispatcherServlet} has received a request and has
  * done its work to resolve locales, themes, and suchlike, it then tries
- * to resolve a Controller, using a
+ * to resolve a controller, using a
  * {@link org.springframework.web.servlet.HandlerMapping HandlerMapping}.
- * When a Controller has been found to handle the request, the
+ * When a controller has been found to handle the request, the
  * {@link #handleRequest(HttpServletRequest, HttpServletResponse) handleRequest}
- * method of the located Controller will be invoked; the located Controller
+ * method of the located controller will be invoked; the located controller
  * is then responsible for handling the actual request and &mdash; if applicable
  * &mdash; returning an appropriate
  * {@link org.springframework.web.servlet.ModelAndView ModelAndView}.
@@ -51,7 +51,7 @@ import org.springframework.web.servlet.ModelAndView;
  * {@link org.springframework.web.servlet.DispatcherServlet DispatcherServlet}
  * which delegates requests to controllers.
  *
- * <p>So basically any <i>direct</i> implementation of the {@code Controller} interface
+ * <p>So basically any <i>direct</i> implementation of the {@code controller} interface
  * just handles HttpServletRequests and should return a ModelAndView, to be further
  * interpreted by the DispatcherServlet. Any additional functionality such as
  * optional validation, form handling, etc. should be obtained through extending
@@ -60,11 +60,11 @@ import org.springframework.web.servlet.ModelAndView;
  *
  * <h3>Notes on design and testing</h3>
  *
- * <p>The Controller interface is explicitly designed to operate on HttpServletRequest
+ * <p>The controller interface is explicitly designed to operate on HttpServletRequest
  * and HttpServletResponse objects, just like an HttpServlet. It does not aim to
  * decouple itself from the Servlet API, in contrast to, for example, WebWork, JSF or Tapestry.
  * Instead, the full power of the Servlet API is available, allowing Controllers to be
- * general-purpose: a Controller is able to not only handle web user interface
+ * general-purpose: a controller is able to not only handle web user interface
  * requests but also to process remoting protocols or to generate reports on demand.
  *
  * <p>Controllers can easily be tested by passing in mock objects for the

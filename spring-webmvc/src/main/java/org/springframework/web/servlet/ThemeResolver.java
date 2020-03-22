@@ -53,6 +53,8 @@ public interface ThemeResolver {
 	 * Should return a default theme as fallback in any case.
 	 * @param request request to be used for resolution
 	 * @return the current theme name
+	 *
+	 * 根据请求解析主题名
 	 */
 	String resolveThemeName(HttpServletRequest request);
 
@@ -63,6 +65,8 @@ public interface ThemeResolver {
 	 * @param themeName the new theme name ({@code null} or empty to reset it)
 	 * @throws UnsupportedOperationException if the ThemeResolver implementation
 	 * does not support dynamic changing of the theme
+	 *
+	 * 设置请求与响应对应的主题名
 	 */
 	void setThemeName(HttpServletRequest request, @Nullable HttpServletResponse response, @Nullable String themeName);
 

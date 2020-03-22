@@ -68,7 +68,7 @@ import org.springframework.web.servlet.view.DefaultRequestToViewNameTranslator;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 /**
- * A {@code MockMvcBuilder} that accepts {@code @Controller} registrations
+ * A {@code MockMvcBuilder} that accepts {@code @controller} registrations
  * thus allowing full control over the instantiation and initialization of
  * controllers and their dependencies similar to plain unit tests, and also
  * making it possible to test one controller at a time.

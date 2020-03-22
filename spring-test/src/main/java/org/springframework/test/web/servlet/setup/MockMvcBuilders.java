@@ -49,7 +49,7 @@ public class MockMvcBuilders {
 
 	/**
 	 * Build a {@link MockMvc} instance by registering one or more
-	 * {@code @Controller} instances and configuring Spring MVC infrastructure
+	 * {@code @controller} instances and configuring Spring MVC infrastructure
 	 * programmatically.
 	 * <p>This allows full control over the instantiation and initialization of
 	 * controllers and their dependencies, similar to plain unit tests while
@@ -65,7 +65,7 @@ public class MockMvcBuilders {
 	 * option for testing a majority of controllers. In such cases, a much
 	 * smaller number of tests can be used to focus on testing and verifying
 	 * the actual Spring MVC configuration.
-	 * @param controllers one or more {@code @Controller} instances to test
+	 * @param controllers one or more {@code @controller} instances to test
 	 * (specified {@code Class} will be turned into instance)
 	 */
 	public static StandaloneMockMvcBuilder standaloneSetup(Object... controllers) {

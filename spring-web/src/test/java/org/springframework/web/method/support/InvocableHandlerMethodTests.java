@@ -151,7 +151,7 @@ public class InvocableHandlerMethodTests {
 		catch (IllegalStateException ex) {
 			assertNotNull("Exception not wrapped", ex.getCause());
 			assertTrue(ex.getCause() instanceof IllegalArgumentException);
-			assertTrue(ex.getMessage().contains("Controller ["));
+			assertTrue(ex.getMessage().contains("controller ["));
 			assertTrue(ex.getMessage().contains("Method ["));
 			assertTrue(ex.getMessage().contains("Resolved arguments: "));
 			assertTrue(ex.getMessage().contains("[0] [type=java.lang.String] [value=__invalid__]"));

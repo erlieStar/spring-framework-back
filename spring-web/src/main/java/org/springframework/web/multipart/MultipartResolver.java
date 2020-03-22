@@ -81,6 +81,8 @@ import javax.servlet.http.HttpServletRequest;
  * @see org.springframework.web.multipart.support.ByteArrayMultipartFileEditor
  * @see org.springframework.web.multipart.support.StringMultipartFileEditor
  * @see org.springframework.web.servlet.DispatcherServlet
+ *
+ * 用来进行文件上传的接口
  */
 public interface MultipartResolver {
 
@@ -109,6 +111,8 @@ public interface MultipartResolver {
 	 * @see javax.servlet.http.HttpServletRequest#getParameter
 	 * @see javax.servlet.http.HttpServletRequest#getParameterNames
 	 * @see javax.servlet.http.HttpServletRequest#getParameterMap
+	 *
+	 * 封装 HttpServletRequest 为 MultipartHttpServletRequest
 	 */
 	MultipartHttpServletRequest resolveMultipart(HttpServletRequest request) throws MultipartException;
 
@@ -116,6 +120,8 @@ public interface MultipartResolver {
 	 * Cleanup any resources used for the multipart handling,
 	 * like a storage for the uploaded files.
 	 * @param request the request to cleanup resources for
+	 *
+	 * 对 MultipartHttpServletRequest 使用的资源进行清理操作
 	 */
 	void cleanupMultipart(MultipartHttpServletRequest request);
 

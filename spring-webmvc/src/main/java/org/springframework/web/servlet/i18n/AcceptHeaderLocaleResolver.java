@@ -39,6 +39,8 @@ import org.springframework.web.servlet.LocaleResolver;
  * @author Rossen Stoyanchev
  * @since 27.02.2003
  * @see javax.servlet.http.HttpServletRequest#getLocale()
+ *
+ * 默认的Locale解析器，通过Accept-Language获取Locale
  */
 public class AcceptHeaderLocaleResolver implements LocaleResolver {
 
@@ -94,6 +96,7 @@ public class AcceptHeaderLocaleResolver implements LocaleResolver {
 	@Override
 	public Locale resolveLocale(HttpServletRequest request) {
 		Locale defaultLocale = getDefaultLocale();
+		// 请求头不包含Accept-Language，使用默认locale
 		if (defaultLocale != null && request.getHeader("Accept-Language") == null) {
 			return defaultLocale;
 		}

@@ -51,7 +51,7 @@ import javax.servlet.http.HttpServletResponse;
  * <p>As of Spring 2.0, Spring's HTTP-based remote exporters, such as
  * {@link org.springframework.remoting.httpinvoker.HttpInvokerServiceExporter}
  * and {@link org.springframework.remoting.caucho.HessianServiceExporter},
- * implement this interface rather than the more extensive Controller interface,
+ * implement this interface rather than the more extensive controller interface,
  * for minimal dependencies on Spring-specific web infrastructure.
  *
  * <p>Note that HttpRequestHandlers may optionally implement the

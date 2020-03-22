@@ -37,7 +37,7 @@ import org.springframework.util.ObjectUtils;
  * String body = entity.getBody();
  * MediaType contentType = entity.getHeaders().getContentType();
  * </pre>
- * Can also be used in Spring MVC, as a return value from a @Controller method:
+ * Can also be used in Spring MVC, as a return value from a @controller method:
  * <pre class="code">
  * &#64;RequestMapping("/handle")
  * public HttpEntity&lt;String&gt; handle() {

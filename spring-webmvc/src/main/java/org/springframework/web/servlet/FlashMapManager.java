@@ -28,6 +28,8 @@ import org.springframework.lang.Nullable;
  * @author Rossen Stoyanchev
  * @since 3.1
  * @see FlashMap
+ *
+ * FlashMapManager用来管理FlashMap, FlashMap用于在redirect时传递参数
  */
 public interface FlashMapManager {
 

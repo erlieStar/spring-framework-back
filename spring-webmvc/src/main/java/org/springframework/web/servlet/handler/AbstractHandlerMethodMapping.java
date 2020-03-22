@@ -309,10 +309,12 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 	 */
 	@Override
 	protected HandlerMethod getHandlerInternal(HttpServletRequest request) throws Exception {
+		// 获取请求路径，作为查找路径
 		String lookupPath = getUrlPathHelper().getLookupPathForRequest(request);
 		if (logger.isDebugEnabled()) {
 			logger.debug("Looking up handler method for path " + lookupPath);
 		}
+		// 获取读锁
 		this.mappingRegistry.acquireReadLock();
 		try {
 			HandlerMethod handlerMethod = lookupHandlerMethod(lookupPath, request);
@@ -343,15 +345,19 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 	@Nullable
 	protected HandlerMethod lookupHandlerMethod(String lookupPath, HttpServletRequest request) throws Exception {
 		List<Match> matches = new ArrayList<>();
+		// 直接匹配
 		List<T> directPathMatches = this.mappingRegistry.getMappingsByUrl(lookupPath);
+		// 如果有匹配的，就添加进匹配列表中
 		if (directPathMatches != null) {
 			addMatchingMappings(directPathMatches, matches, request);
 		}
+		// 还没有匹配，就遍历所有的处理方法去找
 		if (matches.isEmpty()) {
 			// No choice but to go through all mappings...
 			addMatchingMappings(this.mappingRegistry.getMappings().keySet(), matches, request);
 		}
 
+		// 匹配结果不为空
 		if (!matches.isEmpty()) {
 			Comparator<Match> comparator = new MatchComparator(getMappingComparator(request));
 			matches.sort(comparator);
@@ -373,9 +379,11 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 			}
 			request.setAttribute(BEST_MATCHING_HANDLER_ATTRIBUTE, bestMatch.handlerMethod);
 			handleMatch(bestMatch.mapping, lookupPath, request);
+			// 返回匹配的url处理方法
 			return bestMatch.handlerMethod;
 		}
 		else {
+			// 没有找到，返回null
 			return handleNoMatch(this.mappingRegistry.getMappings().keySet(), lookupPath, request);
 		}
 	}
@@ -496,6 +504,8 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 		/**
 		 * Return all mappings and handler methods. Not thread-safe.
 		 * @see #acquireReadLock()
+		 *
+		 * 获取全部映射信息
 		 */
 		public Map<T, HandlerMethod> getMappings() {
 			return this.mappingLookup;
@@ -504,6 +514,8 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 		/**
 		 * Return matches for the given URL path. Not thread-safe.
 		 * @see #acquireReadLock()
+		 *
+		 * 根据路径获取映射信息列表
 		 */
 		@Nullable
 		public List<T> getMappingsByUrl(String urlPath) {
@@ -539,11 +551,15 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 			this.readWriteLock.readLock().unlock();
 		}
 
+		// 注册映射信息
 		public void register(T mapping, Object handler, Method method) {
+			// 获取写锁
 			this.readWriteLock.writeLock().lock();
 			try {
 				HandlerMethod handlerMethod = createHandlerMethod(handler, method);
+				// 保证方法映射唯一
 				assertUniqueMethodMapping(handlerMethod, mapping);
+				// 向映射查找表中添加  映射信息->对应的处理器方法
 				this.mappingLookup.put(mapping, handlerMethod);
 
 				if (logger.isInfoEnabled()) {
@@ -556,6 +572,7 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 				}
 
 				String name = null;
+				// 命名策略不为空
 				if (getNamingStrategy() != null) {
 					name = getNamingStrategy().getName(handlerMethod, mapping);
 					addMappingName(name, handlerMethod);
