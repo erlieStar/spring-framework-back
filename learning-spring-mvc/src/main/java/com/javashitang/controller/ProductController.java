@@ -4,10 +4,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class UserController {
+public class ProductController {
 
-	@RequestMapping("user")
+	@RequestMapping("product")
 	public String index() {
-		return "user";
+		return "product";
 	}
 }

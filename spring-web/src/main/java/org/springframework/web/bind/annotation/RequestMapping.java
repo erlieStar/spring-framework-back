@@ -94,6 +94,8 @@ public @interface RequestMapping {
 	 * <p><b>Supported at the type level as well as at the method level!</b>
 	 * When used at the type level, all method-level mappings inherit
 	 * this primary mapping, narrowing it for a specific handler method.
+	 *
+	 * 请求路径数组
 	 */
 	@AliasFor("path")
 	String[] value() default {};
@@ -120,6 +122,8 @@ public @interface RequestMapping {
 	 * When used at the type level, all method-level mappings inherit
 	 * this HTTP method restriction (i.e. the type-level restriction
 	 * gets checked before the handler method is even resolved).
+	 *
+	 * 请求方法数组
 	 */
 	RequestMethod[] method() default {};
 
@@ -140,6 +144,11 @@ public @interface RequestMapping {
 	 * the type level. The primary path mapping (i.e. the specified URI value)
 	 * still has to uniquely identify the target handler, with parameter mappings
 	 * simply expressing preconditions for invoking the handler.
+	 *
+	 * 请求参数表达式数组
+	 * params = "myParam=myValue" 必须存在参数myParam，并且值为myValue
+	 * params = "myParam" 必须存在参数myParam
+	 * params = "!myParam" 必须不存在参数myParam
 	 */
 	String[] params() default {};
 
@@ -163,6 +172,8 @@ public @interface RequestMapping {
 	 * this header restriction (i.e. the type-level restriction
 	 * gets checked before the handler method is even resolved).
 	 * @see org.springframework.http.MediaType
+	 *
+	 * headers = "myHeader=myValue" 必须存在头字段myHeader，并且值为myValue
 	 */
 	String[] headers() default {};
 
@@ -182,6 +193,9 @@ public @interface RequestMapping {
 	 * this consumes restriction.
 	 * @see org.springframework.http.MediaType
 	 * @see javax.servlet.http.HttpServletRequest#getContentType()
+	 *
+	 * 请求内容媒体类型数组，如一下配置只处理Content-Type值为application/json的请求
+	 * consumes = "application/json"
 	 */
 	String[] consumes() default {};
 
@@ -203,6 +217,9 @@ public @interface RequestMapping {
 	 * When used at the type level, all method-level mappings override
 	 * this produces restriction.
 	 * @see org.springframework.http.MediaType
+	 *
+	 * 应答媒体类型数组,如以下配置只处理Accept值为application/json的请求
+	 * produces = "application/json"
 	 */
 	String[] produces() default {};
 

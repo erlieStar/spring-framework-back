@@ -782,7 +782,11 @@ public class RequestMappingHandlerAdapter extends AbstractHandlerMethodAdapter
 		checkRequest(request);
 
 		// Execute invokeHandlerMethod in synchronized block if required.
+		// 处理时是否对session加锁，默认为false
 		if (this.synchronizeOnSession) {
+			// 获取session对象
+			// false：没有的话返回null
+			// true：没有的话new一个新的返回
 			HttpSession session = request.getSession(false);
 			if (session != null) {
 				Object mutex = WebUtils.getSessionMutex(session);
@@ -797,6 +801,7 @@ public class RequestMappingHandlerAdapter extends AbstractHandlerMethodAdapter
 		}
 		else {
 			// No synchronization on session demanded at all...
+			// 无需锁session，则直接执行处理器方法，此处是核心方法
 			mav = invokeHandlerMethod(request, response, handlerMethod);
 		}
 

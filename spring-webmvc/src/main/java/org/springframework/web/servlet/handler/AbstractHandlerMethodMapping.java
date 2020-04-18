@@ -390,6 +390,7 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 
 	private void addMatchingMappings(Collection<T> mappings, List<Match> matches, HttpServletRequest request) {
 		for (T mapping : mappings) {
+			// 匹配逻辑抽象出来，让子类去实现
 			T match = getMatchingMapping(mapping, request);
 			if (match != null) {
 				matches.add(new Match(match, this.mappingRegistry.getMappings().get(mapping)));

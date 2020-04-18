@@ -50,6 +50,8 @@ import org.springframework.web.util.UrlPathHelper;
  * @author Arjen Poutsma
  * @author Rossen Stoyanchev
  * @since 3.1
+ *
+ * 存放了@RequestMapping中定义的属性值
  */
 public final class RequestMappingInfo implements RequestCondition<RequestMappingInfo> {
 
@@ -211,6 +213,8 @@ public final class RequestMappingInfo implements RequestCondition<RequestMapping
 	 * <p>For example the returned instance may contain the subset of URL patterns that match to
 	 * the current request, sorted with best matching patterns on top.
 	 * @return a new instance in case all conditions match; or {@code null} otherwise
+	 *
+	 * 获取匹配条件，将
 	 */
 	@Override
 	@Nullable

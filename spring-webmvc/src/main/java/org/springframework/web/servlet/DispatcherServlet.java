@@ -610,6 +610,7 @@ public class DispatcherServlet extends FrameworkServlet {
 
 		// Ensure we have at least one HandlerMapping, by registering
 		// a default HandlerMapping if no other mappings are found.
+		// 如果没有设置，则从 DispatcherServlet.properties 中加载
 		if (this.handlerMappings == null) {
 			this.handlerMappings = getDefaultStrategies(context, HandlerMapping.class);
 			if (logger.isDebugEnabled()) {
@@ -987,6 +988,8 @@ public class DispatcherServlet extends FrameworkServlet {
 				// spring mvc对于请求处理器的查找和执行是分离的
 				// 根据请求处理器的类型不同，需要使用不同的适配器去执行处理器
 				// 获取处理器的适配器
+				// 对于@RequestMapping注解注册的处理器，类型为HandlerMethod
+				// 响应的Apapter为RequestMappingHandlerAdapter
 				HandlerAdapter ha = getHandlerAdapter(mappedHandler.getHandler());
 
 				// Process last-modified header, if supported by the handler.
@@ -1010,7 +1013,7 @@ public class DispatcherServlet extends FrameworkServlet {
 				}
 
 				// Actually invoke the handler.
-				// 实际执行handler
+				// 执行handler的方法
 				mv = ha.handle(processedRequest, response, mappedHandler.getHandler());
 
 				// 异步处理则直接返回
@@ -1043,6 +1046,7 @@ public class DispatcherServlet extends FrameworkServlet {
 					new NestedServletException("Handler processing failed", err));
 		}
 		finally {
+			// 异步请求
 			if (asyncManager.isConcurrentHandlingStarted()) {
 				// Instead of postHandle and afterCompletion
 				if (mappedHandler != null) {
@@ -1051,6 +1055,7 @@ public class DispatcherServlet extends FrameworkServlet {
 			}
 			else {
 				// Clean up any resources used by a multipart request.
+				// 上传文件的请求，清理系统资源
 				if (multipartRequestParsed) {
 					cleanupMultipart(processedRequest);
 				}
@@ -1064,6 +1069,7 @@ public class DispatcherServlet extends FrameworkServlet {
 	private void applyDefaultViewName(HttpServletRequest request, @Nullable ModelAndView mv) throws Exception {
 		// 返回值不为空且不包含视图
 		if (mv != null && !mv.hasView()) {
+			// 获取默认视图名字
 			String defaultViewName = getDefaultViewName(request);
 			if (defaultViewName != null) {
 				mv.setViewName(defaultViewName);
@@ -1079,6 +1085,7 @@ public class DispatcherServlet extends FrameworkServlet {
 			@Nullable HandlerExecutionChain mappedHandler, @Nullable ModelAndView mv,
 			@Nullable Exception exception) throws Exception {
 
+		// 标记是否是error视图
 		boolean errorView = false;
 
 		if (exception != null) {
@@ -1087,7 +1094,9 @@ public class DispatcherServlet extends FrameworkServlet {
 				mv = ((ModelAndViewDefiningException) exception).getModelAndView();
 			}
 			else {
+				// 其他异常类型，先获取处理器
 				Object handler = (mappedHandler != null ? mappedHandler.getHandler() : null);
+				// 通过异常处理器将异常解析为一个错误视图
 				mv = processHandlerException(request, response, handler, exception);
 				errorView = (mv != null);
 			}
@@ -1113,6 +1122,7 @@ public class DispatcherServlet extends FrameworkServlet {
 			return;
 		}
 
+		// 执行拦截器的afterCompletion方法
 		if (mappedHandler != null) {
 			mappedHandler.triggerAfterCompletion(request, response, null);
 		}

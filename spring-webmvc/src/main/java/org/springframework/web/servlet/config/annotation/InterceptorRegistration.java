@@ -45,6 +45,7 @@ public class InterceptorRegistration {
 	@Nullable
 	private PathMatcher pathMatcher;
 
+	// 拦截顺序
 	private int order = 0;
 
 

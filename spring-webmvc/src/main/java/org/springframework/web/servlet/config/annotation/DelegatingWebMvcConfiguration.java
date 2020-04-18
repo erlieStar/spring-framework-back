@@ -63,6 +63,7 @@ public class DelegatingWebMvcConfiguration extends WebMvcConfigurationSupport {
 		this.configurers.configureContentNegotiation(configurer);
 	}
 
+	// 配置异步请求的相关支持
 	@Override
 	protected void configureAsyncSupport(AsyncSupportConfigurer configurer) {
 		this.configurers.configureAsyncSupport(configurer);
@@ -78,6 +79,7 @@ public class DelegatingWebMvcConfiguration extends WebMvcConfigurationSupport {
 		this.configurers.addFormatters(registry);
 	}
 
+	// 注册拦截器
 	@Override
 	protected void addInterceptors(InterceptorRegistry registry) {
 		this.configurers.addInterceptors(registry);
