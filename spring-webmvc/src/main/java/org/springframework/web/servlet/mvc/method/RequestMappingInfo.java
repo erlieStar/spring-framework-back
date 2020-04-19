@@ -60,12 +60,16 @@ public final class RequestMappingInfo implements RequestCondition<RequestMapping
 
 	private final PatternsRequestCondition patternsCondition;
 
+	// 请求方法条件
 	private final RequestMethodsRequestCondition methodsCondition;
 
+	// 请求参数条件
 	private final ParamsRequestCondition paramsCondition;
 
+	// 请求头条件
 	private final HeadersRequestCondition headersCondition;
 
+	// 请求内容条件
 	private final ConsumesRequestCondition consumesCondition;
 
 	private final ProducesRequestCondition producesCondition;
@@ -214,13 +218,16 @@ public final class RequestMappingInfo implements RequestCondition<RequestMapping
 	 * the current request, sorted with best matching patterns on top.
 	 * @return a new instance in case all conditions match; or {@code null} otherwise
 	 *
-	 * 获取匹配条件，将
+	 * 获取匹配条件，将匹配条件封装为匹配信息RequestMappingInfo
 	 */
 	@Override
 	@Nullable
 	public RequestMappingInfo getMatchingCondition(HttpServletRequest request) {
+		// 获取请求方法的匹配结果
 		RequestMethodsRequestCondition methods = this.methodsCondition.getMatchingCondition(request);
+		// 获取请求参数条件的匹配结果
 		ParamsRequestCondition params = this.paramsCondition.getMatchingCondition(request);
+		// 获取请求头调降的匹配结果
 		HeadersRequestCondition headers = this.headersCondition.getMatchingCondition(request);
 		ConsumesRequestCondition consumes = this.consumesCondition.getMatchingCondition(request);
 		ProducesRequestCondition produces = this.producesCondition.getMatchingCondition(request);
@@ -503,8 +510,8 @@ public final class RequestMappingInfo implements RequestCondition<RequestMapping
 					this.options.getFileExtensions());
 
 			return new RequestMappingInfo(this.mappingName, patternsCondition,
-					new RequestMethodsRequestCondition(this.methods),
-					new ParamsRequestCondition(this.params),
+					new RequestMethodsRequestCondition(this.methods), // @RequestMapping注解的method属性
+					new ParamsRequestCondition(this.params), // @RequestMapping注解的param属性
 					new HeadersRequestCondition(this.headers),
 					new ConsumesRequestCondition(this.consumes, this.headers),
 					new ProducesRequestCondition(this.produces, this.headers, manager),
