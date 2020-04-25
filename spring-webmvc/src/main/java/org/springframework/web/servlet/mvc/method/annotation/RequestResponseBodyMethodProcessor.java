@@ -112,6 +112,8 @@ public class RequestResponseBodyMethodProcessor extends AbstractMessageConverter
 
 	@Override
 	public boolean supportsReturnType(MethodParameter returnType) {
+		// 1.该返回值对应的方法所在类上标记有@ResponseBody注解
+		// 2.返回值对应的方法上标记有@ResponseBody注解
 		return (AnnotatedElementUtils.hasAnnotation(returnType.getContainingClass(), ResponseBody.class) ||
 				returnType.hasMethodAnnotation(ResponseBody.class));
 	}
@@ -171,12 +173,15 @@ public class RequestResponseBodyMethodProcessor extends AbstractMessageConverter
 	public void handleReturnValue(@Nullable Object returnValue, MethodParameter returnType,
 			ModelAndViewContainer mavContainer, NativeWebRequest webRequest)
 			throws IOException, HttpMediaTypeNotAcceptableException, HttpMessageNotWritableException {
-
+		// 通过容器标记请求已被处理，后续无需再使用ModelAndView策略处理视图
 		mavContainer.setRequestHandled(true);
+		// 准备输入消息
 		ServletServerHttpRequest inputMessage = createInputMessage(webRequest);
+		// 准备输出消息
 		ServletServerHttpResponse outputMessage = createOutputMessage(webRequest);
 
 		// Try even with null return value. ResponseBodyAdvice could get involved.
+		// 使用消息转换器把返回值写入消息
 		writeWithMessageConverters(returnValue, returnType, inputMessage, outputMessage);
 	}
 

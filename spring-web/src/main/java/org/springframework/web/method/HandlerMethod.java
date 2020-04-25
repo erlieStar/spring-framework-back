@@ -56,6 +56,7 @@ public class HandlerMethod {
 	/** Logger that is available to subclasses */
 	protected final Log logger = LogFactory.getLog(getClass());
 
+	// 封装的handler的类
 	private final Object bean;
 
 	@Nullable
@@ -65,6 +66,7 @@ public class HandlerMethod {
 
 	private final Method method;
 
+	// 封装的handler的方法
 	private final Method bridgedMethod;
 
 	private final MethodParameter[] parameters;

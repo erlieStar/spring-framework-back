@@ -223,9 +223,14 @@ public class ContentNegotiatingViewResolver extends WebApplicationObjectSupport
 	public View resolveViewName(String viewName, Locale locale) throws Exception {
 		RequestAttributes attrs = RequestContextHolder.getRequestAttributes();
 		Assert.state(attrs instanceof ServletRequestAttributes, "No current ServletRequestAttributes");
+		// 根据请求头Accept获取请求的MediaType列表
 		List<MediaType> requestedMediaTypes = getMediaTypes(((ServletRequestAttributes) attrs).getRequest());
+		// 请求的MediaType不为空
 		if (requestedMediaTypes != null) {
+			// 获取全部视图列表
 			List<View> candidateViews = getCandidateViews(viewName, locale, requestedMediaTypes);
+			// 1.如果任一视图时SmartView类型且其方法isRedirectView返回true，直接使用此重定向视图
+			// 2.根据视图的ContentType与请求可接收MediaType进行匹配，返回MediaType可匹配视图
 			View bestView = getBestView(candidateViews, requestedMediaTypes, attrs);
 			if (bestView != null) {
 				return bestView;
@@ -339,15 +344,20 @@ public class ContentNegotiatingViewResolver extends WebApplicationObjectSupport
 				}
 			}
 		}
+		// 遍历请求头可接收的MediaType列表
 		for (MediaType mediaType : requestedMediaTypes) {
+			// 遍历候选视图列表
 			for (View candidateView : candidateViews) {
 				if (StringUtils.hasText(candidateView.getContentType())) {
+					// 把视图的ContentType文本解析为MediaType类型
 					MediaType candidateContentType = MediaType.parseMediaType(candidateView.getContentType());
+					// 判断视图的ContentType与请求的的MediaType是否兼容，兼容则返回此视图
 					if (mediaType.isCompatibleWith(candidateContentType)) {
 						if (logger.isDebugEnabled()) {
 							logger.debug("Returning [" + candidateView + "] based on requested media type '" +
 									mediaType + "'");
 						}
+						// 把匹配的MediaType放入请求属性
 						attrs.setAttribute(View.SELECTED_CONTENT_TYPE, mediaType, RequestAttributes.SCOPE_REQUEST);
 						return candidateView;
 					}

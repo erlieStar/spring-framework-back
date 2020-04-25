@@ -192,12 +192,16 @@ public abstract class AbstractMessageConverterMethodProcessor extends AbstractMe
 			declaredType = getGenericType(returnType);
 		}
 
+		// 如果是spring定义的Resource类型
 		if (isResourceType(value, returnType)) {
+			// 输出消息的响应头添加Accept-Ranges头，用于支持断点续传
 			outputMessage.getHeaders().set(HttpHeaders.ACCEPT_RANGES, "bytes");
+			// 返回值不为null，请求头包含range信息
 			if (value != null && inputMessage.getHeaders().getFirst(HttpHeaders.RANGE) != null) {
 				Resource resource = (Resource) value;
 				try {
 					List<HttpRange> httpRanges = inputMessage.getHeaders().getRange();
+					// 标记响应状态码为206，表示响应部分内容
 					outputMessage.getServletResponse().setStatus(HttpStatus.PARTIAL_CONTENT.value());
 					outputValue = HttpRange.toResourceRegions(httpRanges, resource);
 					valueType = outputValue.getClass();
@@ -213,8 +217,10 @@ public abstract class AbstractMessageConverterMethodProcessor extends AbstractMe
 
 		List<MediaType> mediaTypesToUse;
 
+		// 响应头的contentType已指定，直接使用指定的contentType
 		MediaType contentType = outputMessage.getHeaders().getContentType();
 		if (contentType != null && contentType.isConcrete()) {
+			// 单元素列表，将一个值放到list中
 			mediaTypesToUse = Collections.singletonList(contentType);
 		}
 		else {
@@ -244,11 +250,14 @@ public abstract class AbstractMessageConverterMethodProcessor extends AbstractMe
 		}
 
 		MediaType selectedMediaType = null;
+		// 遍历可使用的的内容类型
 		for (MediaType mediaType : mediaTypesToUse) {
+			// 内容类型不包含通配符，直接中断循环，选择这个媒体类型
 			if (mediaType.isConcrete()) {
 				selectedMediaType = mediaType;
 				break;
 			}
+			// 如果媒体类型是*/*或者application，
 			else if (mediaType.equals(MediaType.ALL) || mediaType.equals(MEDIA_TYPE_APPLICATION)) {
 				selectedMediaType = MediaType.APPLICATION_OCTET_STREAM;
 				break;
@@ -256,17 +265,23 @@ public abstract class AbstractMessageConverterMethodProcessor extends AbstractMe
 		}
 
 		if (selectedMediaType != null) {
+			// 移除媒体类型的q参数
 			selectedMediaType = selectedMediaType.removeQualityValue();
+			// 遍历所有消息转换器
 			for (HttpMessageConverter<?> converter : this.messageConverters) {
 				GenericHttpMessageConverter genericConverter = (converter instanceof GenericHttpMessageConverter ?
 						(GenericHttpMessageConverter<?>) converter : null);
 				if (genericConverter != null ?
 						((GenericHttpMessageConverter) converter).canWrite(declaredType, valueType, selectedMediaType) :
 						converter.canWrite(valueType, selectedMediaType)) {
+					// 判断当前消息类型是否支持对返回值类型和选择的媒体类型执行写入逻辑
+					// 如果执行，先执行增强器链的beforeBodyWrite逻辑
 					outputValue = getAdvice().beforeBodyWrite(outputValue, returnType, selectedMediaType,
 							(Class<? extends HttpMessageConverter<?>>) converter.getClass(),
 							inputMessage, outputMessage);
+					// 增强后输出值不为null
 					if (outputValue != null) {
+						// 当请求路径最后包含扩展名时，对返回的Content-Dispositioon响应头做特殊处理，避免出翔RFD攻击
 						addContentDispositionHeader(inputMessage, outputMessage);
 						if (genericConverter != null) {
 							genericConverter.write(outputValue, declaredType, selectedMediaType, outputMessage);
@@ -284,6 +299,7 @@ public abstract class AbstractMessageConverterMethodProcessor extends AbstractMe
 			}
 		}
 
+		// 输出值不为null，但未被消息转换器处理，也抛出异常
 		if (outputValue != null) {
 			throw new HttpMediaTypeNotAcceptableException(this.allSupportedMediaTypes);
 		}

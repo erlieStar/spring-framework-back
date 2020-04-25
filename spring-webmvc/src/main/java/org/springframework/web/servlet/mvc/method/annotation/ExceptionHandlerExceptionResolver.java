@@ -282,12 +282,14 @@ public class ExceptionHandlerExceptionResolver extends AbstractHandlerMethodExce
 				throw new IllegalStateException("Unresolvable type for ControllerAdviceBean: " + adviceBean);
 			}
 			ExceptionHandlerMethodResolver resolver = new ExceptionHandlerMethodResolver(beanType);
+			// 如果增强器类型中有@ExceptionHandler注解标记的方法
 			if (resolver.hasExceptionMappings()) {
 				this.exceptionHandlerAdviceCache.put(adviceBean, resolver);
 				if (logger.isInfoEnabled()) {
 					logger.info("Detected @ExceptionHandler methods in " + adviceBean);
 				}
 			}
+			// 如果增强器类型是ResponseBodyAdvice，则添加到响应体增强器列表中
 			if (ResponseBodyAdvice.class.isAssignableFrom(beanType)) {
 				this.responseBodyAdvice.add(adviceBean);
 				if (logger.isInfoEnabled()) {
@@ -414,6 +416,7 @@ public class ExceptionHandlerExceptionResolver extends AbstractHandlerMethodExce
 			return null;
 		}
 
+		// ModelAndView被标记为请求已处理，返回一个空的ModelAndView实例，标记响应内容已被处理
 		if (mavContainer.isRequestHandled()) {
 			return new ModelAndView();
 		}

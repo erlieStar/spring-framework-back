@@ -926,9 +926,13 @@ public class WebMvcConfigurationSupport implements ApplicationContextAware, Serv
 	 */
 	protected final void addDefaultHandlerExceptionResolvers(List<HandlerExceptionResolver> exceptionResolvers) {
 		ExceptionHandlerExceptionResolver exceptionHandlerResolver = createExceptionHandlerExceptionResolver();
+		// 设置内容协商管理器
 		exceptionHandlerResolver.setContentNegotiationManager(mvcContentNegotiationManager());
+		// 设置消息转换器
 		exceptionHandlerResolver.setMessageConverters(getMessageConverters());
+		// 设置参数解析器
 		exceptionHandlerResolver.setCustomArgumentResolvers(getArgumentResolvers());
+		// 设置返回值处理器
 		exceptionHandlerResolver.setCustomReturnValueHandlers(getReturnValueHandlers());
 		if (jackson2Present) {
 			exceptionHandlerResolver.setResponseBodyAdvice(
@@ -937,13 +941,15 @@ public class WebMvcConfigurationSupport implements ApplicationContextAware, Serv
 		if (this.applicationContext != null) {
 			exceptionHandlerResolver.setApplicationContext(this.applicationContext);
 		}
+		// 触发异常处理器内部的初始化
 		exceptionHandlerResolver.afterPropertiesSet();
 		exceptionResolvers.add(exceptionHandlerResolver);
 
 		ResponseStatusExceptionResolver responseStatusResolver = new ResponseStatusExceptionResolver();
+		// 设置信息源为应用上下文
 		responseStatusResolver.setMessageSource(this.applicationContext);
 		exceptionResolvers.add(responseStatusResolver);
-
+		// 添加默认异常处理器
 		exceptionResolvers.add(new DefaultHandlerExceptionResolver());
 	}
 

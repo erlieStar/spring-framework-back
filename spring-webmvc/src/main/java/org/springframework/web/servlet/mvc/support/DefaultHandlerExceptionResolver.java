@@ -169,6 +169,7 @@ public class DefaultHandlerExceptionResolver extends AbstractHandlerExceptionRes
 			HttpServletRequest request, HttpServletResponse response, @Nullable Object handler, Exception ex) {
 
 		try {
+			// 请求方法不被支持，返回405
 			if (ex instanceof HttpRequestMethodNotSupportedException) {
 				return handleHttpRequestMethodNotSupported(
 						(HttpRequestMethodNotSupportedException) ex, request, response, handler);
@@ -185,6 +186,7 @@ public class DefaultHandlerExceptionResolver extends AbstractHandlerExceptionRes
 				return handleMissingPathVariable(
 						(MissingPathVariableException) ex, request, response, handler);
 			}
+			// 缺少请求参数时，返回400
 			else if (ex instanceof MissingServletRequestParameterException) {
 				return handleMissingServletRequestParameter(
 						(MissingServletRequestParameterException) ex, request, response, handler);
@@ -194,6 +196,7 @@ public class DefaultHandlerExceptionResolver extends AbstractHandlerExceptionRes
 						(ServletRequestBindingException) ex, request, response, handler);
 			}
 			else if (ex instanceof ConversionNotSupportedException) {
+				// 消息转换不被支持时返回500
 				return handleConversionNotSupported(
 						(ConversionNotSupportedException) ex, request, response, handler);
 			}
