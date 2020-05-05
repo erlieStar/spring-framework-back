@@ -184,6 +184,7 @@ public final class RequestMappingInfo implements RequestCondition<RequestMapping
 	 */
 	@Override
 	public RequestMappingInfo combine(RequestMappingInfo other) {
+		// 合并映射名
 		String name = combineNames(other);
 		PatternsRequestCondition patterns = this.patternsCondition.combine(other.patternsCondition);
 		RequestMethodsRequestCondition methods = this.methodsCondition.combine(other.methodsCondition);
@@ -236,11 +237,13 @@ public final class RequestMappingInfo implements RequestCondition<RequestMapping
 			return null;
 		}
 
+		// 请求路径模式条件的匹配结果
 		PatternsRequestCondition patterns = this.patternsCondition.getMatchingCondition(request);
 		if (patterns == null) {
 			return null;
 		}
 
+		// 子定义条件的匹配结果
 		RequestConditionHolder custom = this.customConditionHolder.getMatchingCondition(request);
 		if (custom == null) {
 			return null;
@@ -502,6 +505,7 @@ public final class RequestMappingInfo implements RequestCondition<RequestMapping
 
 		@Override
 		public RequestMappingInfo build() {
+			// 获取配置中的内容协商管理器
 			ContentNegotiationManager manager = this.options.getContentNegotiationManager();
 
 			PatternsRequestCondition patternsCondition = new PatternsRequestCondition(

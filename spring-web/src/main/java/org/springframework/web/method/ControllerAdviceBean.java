@@ -162,6 +162,7 @@ public class ControllerAdviceBean implements Ordered {
 	 * @since 4.0
 	 */
 	public boolean isApplicableToBeanType(@Nullable Class<?> beanType) {
+		// 没有配置过滤属性，全部处理器Bean都可以应用
 		if (!hasSelectors()) {
 			return true;
 		}

@@ -1088,9 +1088,11 @@ public class DispatcherServlet extends FrameworkServlet {
 		// 标记是否是error视图
 		boolean errorView = false;
 
+		// 发生了异常
 		if (exception != null) {
 			if (exception instanceof ModelAndViewDefiningException) {
 				logger.debug("ModelAndViewDefiningException encountered", exception);
+				// 直接使用异常中封装的ModelAndView作为最终的ModelAndView结果
 				mv = ((ModelAndViewDefiningException) exception).getModelAndView();
 			}
 			else {
@@ -1106,6 +1108,7 @@ public class DispatcherServlet extends FrameworkServlet {
 		if (mv != null && !mv.wasCleared()) {
 			// 渲染
 			render(mv, request, response);
+			// 如果是异常视图，渲染后需要清空请求属性中的异常信息
 			if (errorView) {
 				WebUtils.clearErrorRequestAttributes(request);
 			}
@@ -1300,6 +1303,7 @@ public class DispatcherServlet extends FrameworkServlet {
 				}
 			}
 		}
+		// 异常视图不为空
 		if (exMv != null) {
 			if (exMv.isEmpty()) {
 				request.setAttribute(EXCEPTION_ATTRIBUTE, ex);
@@ -1319,6 +1323,7 @@ public class DispatcherServlet extends FrameworkServlet {
 			return exMv;
 		}
 
+		// 处理器异常解析器，则原封不动抛出异常，交给Web框架处理
 		throw ex;
 	}
 
@@ -1333,14 +1338,17 @@ public class DispatcherServlet extends FrameworkServlet {
 	 */
 	protected void render(ModelAndView mv, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		// Determine locale for request and apply it to the response.
+		// 通过Locale解析器获取请求对应的Locale
 		Locale locale =
 				(this.localeResolver != null ? this.localeResolver.resolveLocale(request) : request.getLocale());
 		response.setLocale(locale);
 
 		View view;
 		String viewName = mv.getViewName();
+		// view属性中保存的是String类型视图名
 		if (viewName != null) {
 			// We need to resolve the view name.
+			// 把视图名解析为视图
 			view = resolveViewName(viewName, mv.getModelInternal(), locale, request);
 			if (view == null) {
 				throw new ServletException("Could not resolve view with name '" + mv.getViewName() +
@@ -1349,6 +1357,7 @@ public class DispatcherServlet extends FrameworkServlet {
 		}
 		else {
 			// No need to lookup: the ModelAndView object contains the actual View object.
+			// view属性存的时View类
 			view = mv.getView();
 			if (view == null) {
 				throw new ServletException("ModelAndView [" + mv + "] neither contains a view name nor a " +

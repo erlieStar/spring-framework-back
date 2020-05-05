@@ -125,14 +125,17 @@ public class RequestMappingHandlerMapping extends RequestMappingInfoHandlerMappi
 
 	@Override
 	public void afterPropertiesSet() {
+		// 创建映射信息构造器配置，用于构造映射信息RequestMappingInfo
 		this.config = new RequestMappingInfo.BuilderConfiguration();
 		this.config.setUrlPathHelper(getUrlPathHelper());
 		this.config.setPathMatcher(getPathMatcher());
 		this.config.setSuffixPatternMatch(this.useSuffixPatternMatch);
 		this.config.setTrailingSlashMatch(this.useTrailingSlashMatch);
 		this.config.setRegisteredSuffixPatternMatch(this.useRegisteredSuffixPatternMatch);
+		// 设置内容协商管理器组件
 		this.config.setContentNegotiationManager(getContentNegotiationManager());
 
+		// 执行处理器方法的初始化逻辑
 		super.afterPropertiesSet();
 	}
 
@@ -189,10 +192,13 @@ public class RequestMappingHandlerMapping extends RequestMappingInfoHandlerMappi
 	@Override
 	@Nullable
 	protected RequestMappingInfo getMappingForMethod(Method method, Class<?> handlerType) {
+		// 获取方法上的RequestMappingInfo
 		RequestMappingInfo info = createRequestMappingInfo(method);
 		if (info != null) {
+			// 获取类上的RequestMappingInfo
 			RequestMappingInfo typeInfo = createRequestMappingInfo(handlerType);
 			if (typeInfo != null) {
+				// 合并类上和方法上的映射信息
 				info = typeInfo.combine(info);
 			}
 		}
@@ -263,6 +269,7 @@ public class RequestMappingHandlerMapping extends RequestMappingInfoHandlerMappi
 				.consumes(requestMapping.consumes())
 				.produces(requestMapping.produces())
 				.mappingName(requestMapping.name());
+		// 自定义条件不为空，则为构造器添加自定义条件，默认为空
 		if (customCondition != null) {
 			builder.customCondition(customCondition);
 		}

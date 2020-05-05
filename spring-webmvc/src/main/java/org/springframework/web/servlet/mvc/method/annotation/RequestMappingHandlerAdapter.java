@@ -205,6 +205,7 @@ public class RequestMappingHandlerAdapter extends AbstractHandlerMethodAdapter
 		this.messageConverters.add(stringHttpMessageConverter);
 		// Source类型的消息转换器
 		this.messageConverters.add(new SourceHttpMessageConverter<>());
+		// 包含全部转换器的消息转换器，用于对表单数据进行转换
 		this.messageConverters.add(new AllEncompassingFormHttpMessageConverter());
 	}
 
@@ -784,6 +785,8 @@ public class RequestMappingHandlerAdapter extends AbstractHandlerMethodAdapter
 			HttpServletResponse response, HandlerMethod handlerMethod) throws Exception {
 
 		ModelAndView mav;
+		// 1.判断本实例中的supportedMethods是否包含请求方法，默认支持所有请求方法
+		// 2.如果配置的需要session属性为true，则检查请求是否包含session，默认不需要session
 		checkRequest(request);
 
 		// Execute invokeHandlerMethod in synchronized block if required.
@@ -794,6 +797,7 @@ public class RequestMappingHandlerAdapter extends AbstractHandlerMethodAdapter
 			// true：没有的话new一个新的返回
 			HttpSession session = request.getSession(false);
 			if (session != null) {
+				// 获取session中的锁对象
 				Object mutex = WebUtils.getSessionMutex(session);
 				synchronized (mutex) {
 					mav = invokeHandlerMethod(request, response, handlerMethod);
@@ -810,6 +814,7 @@ public class RequestMappingHandlerAdapter extends AbstractHandlerMethodAdapter
 			mav = invokeHandlerMethod(request, response, handlerMethod);
 		}
 
+		// 响应结果不包含响应控制头
 		if (!response.containsHeader(HEADER_CACHE_CONTROL)) {
 			if (getSessionAttributesHandler(handlerMethod).hasSessionAttributes()) {
 				applyCacheSeconds(response, this.cacheSecondsForSessionAttributeHandlers);
@@ -868,18 +873,26 @@ public class RequestMappingHandlerAdapter extends AbstractHandlerMethodAdapter
 			WebDataBinderFactory binderFactory = getDataBinderFactory(handlerMethod);
 			ModelFactory modelFactory = getModelFactory(handlerMethod, binderFactory);
 
+			// 创建servlet可调用处理器实例
 			ServletInvocableHandlerMethod invocableMethod = createInvocableHandlerMethod(handlerMethod);
+			// 设置实例的参数解析器为当前组将初始化后的参数解析器
 			if (this.argumentResolvers != null) {
 				invocableMethod.setHandlerMethodArgumentResolvers(this.argumentResolvers);
 			}
+			// 设置实例的返回值处理器为当前组将初始化后的返回值解析器
 			if (this.returnValueHandlers != null) {
 				invocableMethod.setHandlerMethodReturnValueHandlers(this.returnValueHandlers);
 			}
 			invocableMethod.setDataBinderFactory(binderFactory);
+			// 设置实例的参数名获取器为当前组件初始化后的参数名获取器
 			invocableMethod.setParameterNameDiscoverer(this.parameterNameDiscoverer);
 
+			// 创建用于处理过程中使用的ModelAndView容器
+			// 与Model，View相关的读写逻辑都通过ModelAndView的容器执行
 			ModelAndViewContainer mavContainer = new ModelAndViewContainer();
+			// 向容器的Model中添加FlashMap中的所有属性
 			mavContainer.addAllAttributes(RequestContextUtils.getInputFlashMap(request));
+			// 初始化Model
 			modelFactory.initModel(webRequest, mavContainer, invocableMethod);
 			mavContainer.setIgnoreDefaultModelOnRedirect(this.ignoreDefaultModelOnRedirect);
 
@@ -908,6 +921,7 @@ public class RequestMappingHandlerAdapter extends AbstractHandlerMethodAdapter
 				return null;
 			}
 
+			// 获取ModelAndView
 			return getModelAndView(mavContainer, modelFactory, webRequest);
 		}
 		finally {
@@ -926,8 +940,10 @@ public class RequestMappingHandlerAdapter extends AbstractHandlerMethodAdapter
 	}
 
 	private ModelFactory getModelFactory(HandlerMethod handlerMethod, WebDataBinderFactory binderFactory) {
+		// 获取SessionAttributes的处理器，用于处理hander bean上标记的@SessionAttributes注解
 		SessionAttributesHandler sessionAttrHandler = getSessionAttributesHandler(handlerMethod);
 		Class<?> handlerType = handlerMethod.getBeanType();
+		// 从缓存中获取handler中被@ModelAttribute标记的方法
 		Set<Method> methods = this.modelAttributeCache.get(handlerType);
 		if (methods == null) {
 			methods = MethodIntrospector.selectMethods(handlerType, MODEL_ATTRIBUTE_METHODS);
@@ -935,7 +951,9 @@ public class RequestMappingHandlerAdapter extends AbstractHandlerMethodAdapter
 		}
 		List<InvocableHandlerMethod> attrMethods = new ArrayList<>();
 		// Global methods first
+		// 全局的ControllerAdvice标记的处理器增强器中的@ModelAttribute方法优先
 		this.modelAttributeAdviceCache.forEach((clazz, methodSet) -> {
+			// 进行属性过滤，看是否能应用到当前handler中
 			if (clazz.isApplicableToBeanType(handlerType)) {
 				Object bean = clazz.resolveBean();
 				for (Method method : methodSet) {
@@ -943,6 +961,7 @@ public class RequestMappingHandlerAdapter extends AbstractHandlerMethodAdapter
 				}
 			}
 		});
+		// 添加当前handler中的@ModelAttribute注解
 		for (Method method : methods) {
 			Object bean = handlerMethod.getBean();
 			attrMethods.add(createModelAttributeMethod(binderFactory, bean, method));
@@ -962,14 +981,19 @@ public class RequestMappingHandlerAdapter extends AbstractHandlerMethodAdapter
 
 	private WebDataBinderFactory getDataBinderFactory(HandlerMethod handlerMethod) throws Exception {
 		Class<?> handlerType = handlerMethod.getBeanType();
+		// 尝试从InitBinder缓存中获取当前handlerType中所有标记了@InitBinder注解的方法
 		Set<Method> methods = this.initBinderCache.get(handlerType);
 		if (methods == null) {
+			// 找到handlerType中所有标记了@InitBinder注解的方法
 			methods = MethodIntrospector.selectMethods(handlerType, INIT_BINDER_METHODS);
+			// 放到缓存中
 			this.initBinderCache.put(handlerType, methods);
 		}
 		List<InvocableHandlerMethod> initBinderMethods = new ArrayList<>();
 		// Global methods first
+		// 遍历全局InitBinder增强器缓存
 		this.initBinderAdviceCache.forEach((clazz, methodSet) -> {
+			// 判断处理器增强bean是否可被应用到当前处理器Bean
 			if (clazz.isApplicableToBeanType(handlerType)) {
 				Object bean = clazz.resolveBean();
 				for (Method method : methodSet) {
@@ -977,10 +1001,12 @@ public class RequestMappingHandlerAdapter extends AbstractHandlerMethodAdapter
 				}
 			}
 		});
+		// 添加全局@InitBinder方法后，再添加处理器所在Bean的@InitBinder方法
 		for (Method method : methods) {
 			Object bean = handlerMethod.getBean();
 			initBinderMethods.add(createInitBinderMethod(bean, method));
 		}
+		// 把InitBinder方法列表作为参数，创建WebDataBinder工厂
 		return createDataBinderFactory(initBinderMethods);
 	}
 
@@ -1013,6 +1039,7 @@ public class RequestMappingHandlerAdapter extends AbstractHandlerMethodAdapter
 			ModelFactory modelFactory, NativeWebRequest webRequest) throws Exception {
 
 		modelFactory.updateModel(webRequest, mavContainer);
+		// 已经处理过的请求，返回null，后续的ViewResolver和View渲染则不会再工作
 		if (mavContainer.isRequestHandled()) {
 			return null;
 		}

@@ -200,6 +200,7 @@ public abstract class AbstractMessageConverterMethodProcessor extends AbstractMe
 			if (value != null && inputMessage.getHeaders().getFirst(HttpHeaders.RANGE) != null) {
 				Resource resource = (Resource) value;
 				try {
+					// 拿到请求头要获取的资源范围列表
 					List<HttpRange> httpRanges = inputMessage.getHeaders().getRange();
 					// 标记响应状态码为206，表示响应部分内容
 					outputMessage.getServletResponse().setStatus(HttpStatus.PARTIAL_CONTENT.value());
@@ -225,7 +226,9 @@ public abstract class AbstractMessageConverterMethodProcessor extends AbstractMe
 		}
 		else {
 			HttpServletRequest request = inputMessage.getServletRequest();
+			// 获取请求头中的Accept内容，即请求可接受响应类型列表
 			List<MediaType> requestedMediaTypes = getAcceptableMediaTypes(request);
+			// 获取可生产内容列表
 			List<MediaType> producibleMediaTypes = getProducibleMediaTypes(request, valueType, declaredType);
 
 			if (outputValue != null && producibleMediaTypes.isEmpty()) {

@@ -124,15 +124,19 @@ public class RequestParamMethodArgumentResolver extends AbstractNamedValueMethod
 	@Override
 	public boolean supportsParameter(MethodParameter parameter) {
 		if (parameter.hasParameterAnnotation(RequestParam.class)) {
+			// 参数类型是map
 			if (Map.class.isAssignableFrom(parameter.nestedIfOptional().getNestedParameterType())) {
 				RequestParam requestParam = parameter.getParameterAnnotation(RequestParam.class);
+				// 注解不为null且注解的name属性村子啊
 				return (requestParam != null && StringUtils.hasText(requestParam.name()));
 			}
 			else {
+				// 有RequestParam注解，且类型不为Map则都支持
 				return true;
 			}
 		}
 		else {
+			// 有RequestPart注解则返回不支持，因为RequestPart有自己的参数解析器
 			if (parameter.hasParameterAnnotation(RequestPart.class)) {
 				return false;
 			}
@@ -140,10 +144,13 @@ public class RequestParamMethodArgumentResolver extends AbstractNamedValueMethod
 			if (MultipartResolutionDelegate.isMultipartArgument(parameter)) {
 				return true;
 			}
+			// 如果是默认解析，该参数是构造时传入的
 			else if (this.useDefaultResolution) {
+				// 判断参数类型是否是简单类型，简单类型为Java内置的一些类型及其数组类型
 				return BeanUtils.isSimpleProperty(parameter.getNestedParameterType());
 			}
 			else {
+				// 其他情况均不支持
 				return false;
 			}
 		}
@@ -158,6 +165,7 @@ public class RequestParamMethodArgumentResolver extends AbstractNamedValueMethod
 	@Override
 	@Nullable
 	protected Object resolveName(String name, MethodParameter parameter, NativeWebRequest request) throws Exception {
+		// 获取原始servlet请求
 		HttpServletRequest servletRequest = request.getNativeRequest(HttpServletRequest.class);
 
 		if (servletRequest != null) {

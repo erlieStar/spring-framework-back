@@ -128,12 +128,13 @@ public class InvocableHandlerMethod extends HandlerMethod {
 	public Object invokeForRequest(NativeWebRequest request, @Nullable ModelAndViewContainer mavContainer,
 			Object... providedArgs) throws Exception {
 
+		// 获取handler方法的所有参数，用于反射调用
 		Object[] args = getMethodArgumentValues(request, mavContainer, providedArgs);
 		if (logger.isTraceEnabled()) {
 			logger.trace("Invoking '" + ClassUtils.getQualifiedMethodName(getMethod(), getBeanType()) +
 					"' with arguments " + Arrays.toString(args));
 		}
-		//调用对应的方法
+		// 通过反射调用handler中的方法，即在这里执行了@RequestMapping标明的方法
 		Object returnValue = doInvoke(args);
 		if (logger.isTraceEnabled()) {
 			logger.trace("Method [" + ClassUtils.getQualifiedMethodName(getMethod(), getBeanType()) +
@@ -148,20 +149,23 @@ public class InvocableHandlerMethod extends HandlerMethod {
 	private Object[] getMethodArgumentValues(NativeWebRequest request, @Nullable ModelAndViewContainer mavContainer,
 			Object... providedArgs) throws Exception {
 
-		// 方法的参数定义列表
+		// 方法的参数定义列表，就是对坐标和类型等的一些封装
 		MethodParameter[] parameters = getMethodParameters();
 		Object[] args = new Object[parameters.length];
 		// 遍历所有方法参数
 		for (int i = 0; i < parameters.length; i++) {
 			MethodParameter parameter = parameters[i];
+			// 初始化参数名获取器，用来获取参数名字
 			parameter.initParameterNameDiscovery(this.parameterNameDiscoverer);
+			// 如果能从已提供的参数中获取，则继续下一个参数的解析
 			args[i] = resolveProvidedArgument(parameter, providedArgs);
 			if (args[i] != null) {
 				continue;
 			}
-			// 根据内置的参数解析器来解析当前的参数值
+			// 判断参数解析器是否支持这个参数，如果支持，则执行解析逻辑
 			if (this.argumentResolvers.supportsParameter(parameter)) {
 				try {
+					// 执行参数解析逻辑，获取参数值
 					args[i] = this.argumentResolvers.resolveArgument(
 							parameter, mavContainer, request, this.dataBinderFactory);
 					continue;

@@ -123,7 +123,7 @@ public @interface RequestMapping {
 	 * this HTTP method restriction (i.e. the type-level restriction
 	 * gets checked before the handler method is even resolved).
 	 *
-	 * 请求方法数组
+	 * 请求方法数组，如GET，POST，HEAD
 	 */
 	RequestMethod[] method() default {};
 
