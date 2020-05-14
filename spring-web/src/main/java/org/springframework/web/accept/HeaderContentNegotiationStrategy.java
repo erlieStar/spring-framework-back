@@ -44,6 +44,7 @@ public class HeaderContentNegotiationStrategy implements ContentNegotiationStrat
 			throws HttpMediaTypeNotAcceptableException {
 
 		String[] headerValueArray = request.getHeaderValues(HttpHeaders.ACCEPT);
+		// request 没有 accept header，则为*/*
 		if (headerValueArray == null) {
 			return MEDIA_TYPE_ALL_LIST;
 		}
@@ -51,6 +52,7 @@ public class HeaderContentNegotiationStrategy implements ContentNegotiationStrat
 		List<String> headerValues = Arrays.asList(headerValueArray);
 		try {
 			List<MediaType> mediaTypes = MediaType.parseMediaTypes(headerValues);
+			// 将媒体类型排序
 			MediaType.sortBySpecificityAndQuality(mediaTypes);
 			return !CollectionUtils.isEmpty(mediaTypes) ? mediaTypes : MEDIA_TYPE_ALL_LIST;
 		}

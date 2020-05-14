@@ -194,7 +194,7 @@ public @interface RequestMapping {
 	 * @see org.springframework.http.MediaType
 	 * @see javax.servlet.http.HttpServletRequest#getContentType()
 	 *
-	 * 请求内容媒体类型数组，如一下配置只处理Content-Type值为application/json的请求
+	 * reponse header中content-type属性
 	 * consumes = "application/json"
 	 */
 	String[] consumes() default {};
@@ -218,7 +218,8 @@ public @interface RequestMapping {
 	 * this produces restriction.
 	 * @see org.springframework.http.MediaType
 	 *
-	 * 应答媒体类型数组,如以下配置只处理Accept值为application/json的请求
+	 * request head 中的accept属性，用来告知服务端，客户端可以处理的内容类型
+	 * 借助内容协商机制, 服务器可以从诸多备选项中选择一项进行应用，并使用 Content-Type 应答头通知客户端它的选择
 	 * produces = "application/json"
 	 */
 	String[] produces() default {};

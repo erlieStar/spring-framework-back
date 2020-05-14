@@ -48,6 +48,8 @@ public interface ContentNegotiationStrategy {
 	 * were requested.
 	 * @throws HttpMediaTypeNotAcceptableException if the requested media
 	 * types cannot be parsed
+	 *
+	 * 将给定的请求解析为媒体类型列表
 	 */
 	List<MediaType> resolveMediaTypes(NativeWebRequest webRequest)
 			throws HttpMediaTypeNotAcceptableException;

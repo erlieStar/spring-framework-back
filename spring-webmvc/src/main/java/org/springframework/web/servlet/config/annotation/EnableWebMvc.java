@@ -94,6 +94,10 @@ import org.springframework.context.annotation.Import;
  * @see org.springframework.web.servlet.config.annotation.WebMvcConfigurer
  * @see org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport
  * @see org.springframework.web.servlet.config.annotation.DelegatingWebMvcConfiguration
+ *
+ * @EnableWebMvc 通过引入DelegatingWebMvcConfiguration配置类
+ * DelegatingWebMvcConfiguration 集成自 WebMvcConfigurationSupport
+ * WebMvcConfigurationSupport 初始化了一些Spring MVC的默认配置
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)

@@ -38,13 +38,19 @@ import org.springframework.web.servlet.HandlerExceptionResolver;
  *
  * @author Rossen Stoyanchev
  * @since 3.1
+ *
+ * 参考博客：https://blog.csdn.net/andy_zhang2007/article/details/87348073
+ * WebMvcConfigurer 和 WebMvcConfigurationSupport 应该用哪个？
+ * 参考博客：https://zhuanlan.zhihu.com/p/82346557
  */
 @Configuration
 public class DelegatingWebMvcConfiguration extends WebMvcConfigurationSupport {
 
+	// WebMvcConfigurerComposite见名知意，对多个WebMvcConfigurer的一个组合
 	private final WebMvcConfigurerComposite configurers = new WebMvcConfigurerComposite();
 
 
+	// 注入一组WebMvcConfigurer，由开发人员提供或者框架提供
 	@Autowired(required = false)
 	public void setConfigurers(List<WebMvcConfigurer> configurers) {
 		if (!CollectionUtils.isEmpty(configurers)) {

@@ -69,11 +69,13 @@ public final class RequestMappingInfo implements RequestCondition<RequestMapping
 	// 请求头条件
 	private final HeadersRequestCondition headersCondition;
 
-	// 请求内容条件
+	// reponse header中content-type属性
 	private final ConsumesRequestCondition consumesCondition;
 
+	// request head 中的accept属性，用来告知服务端，客户端可以处理的内容类型
 	private final ProducesRequestCondition producesCondition;
 
+	// 用户自定义的条件
 	private final RequestConditionHolder customConditionHolder;
 
 

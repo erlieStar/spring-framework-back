@@ -1088,6 +1088,7 @@ public class DispatcherServlet extends FrameworkServlet {
 		// 标记是否是error视图
 		boolean errorView = false;
 
+		// 处理过程发生异常
 		if (exception != null) {
 			if (exception instanceof ModelAndViewDefiningException) {
 				logger.debug("ModelAndViewDefiningException encountered", exception);
