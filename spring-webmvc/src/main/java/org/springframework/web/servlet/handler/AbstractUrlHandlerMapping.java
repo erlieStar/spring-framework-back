@@ -125,6 +125,7 @@ public abstract class AbstractUrlHandlerMapping extends AbstractHandlerMapping i
 			// We need to care for the default handler directly, since we need to
 			// expose the PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE for it as well.
 			Object rawHandler = null;
+			// 如果请求是/，表示根路径，设置根处理器
 			if ("/".equals(lookupPath)) {
 				rawHandler = getRootHandler();
 			}
@@ -348,6 +349,7 @@ public abstract class AbstractUrlHandlerMapping extends AbstractHandlerMapping i
 			}
 		}
 
+		// 存在对应的handler
 		Object mappedHandler = this.handlerMap.get(urlPath);
 		if (mappedHandler != null) {
 			if (mappedHandler != resolvedHandler) {
