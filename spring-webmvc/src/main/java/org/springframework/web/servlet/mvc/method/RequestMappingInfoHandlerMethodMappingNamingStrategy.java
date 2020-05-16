@@ -31,11 +31,15 @@ import org.springframework.web.servlet.handler.HandlerMethodMappingNamingStrateg
  *
  * @author Rossen Stoyanchev
  * @since 4.1
+ *
+ * 用途参考博客
+ * https://www.cnblogs.com/fangshixiang/p/11491517.html
  */
 public class RequestMappingInfoHandlerMethodMappingNamingStrategy
 		implements HandlerMethodMappingNamingStrategy<RequestMappingInfo> {
 
 	/** Separator between the type and method-level parts of a HandlerMethod mapping name */
+	// 类和方法之间的分隔符
 	public static final String SEPARATOR = "#";
 
 
@@ -45,6 +49,7 @@ public class RequestMappingInfoHandlerMethodMappingNamingStrategy
 			return mapping.getName();
 		}
 		StringBuilder sb = new StringBuilder();
+		// 拿到类名
 		String simpleTypeName = handlerMethod.getBeanType().getSimpleName();
 		for (int i = 0; i < simpleTypeName.length(); i++) {
 			if (Character.isUpperCase(simpleTypeName.charAt(i))) {

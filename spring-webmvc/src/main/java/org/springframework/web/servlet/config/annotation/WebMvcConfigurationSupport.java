@@ -743,6 +743,7 @@ public class WebMvcConfigurationSupport implements ApplicationContextAware, Serv
 		if (this.messageConverters == null) {
 			this.messageConverters = new ArrayList<>();
 			configureMessageConverters(this.messageConverters);
+			// 用户没有设置的话，用默认的
 			if (this.messageConverters.isEmpty()) {
 				addDefaultHttpMessageConverters(this.messageConverters);
 			}

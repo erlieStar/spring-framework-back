@@ -30,6 +30,9 @@ import org.springframework.lang.Nullable;
  * @author Arjen Poutsma
  * @author Juergen Hoeller
  * @since 3.0
+ * 用来处理 @RequestBody @ResponseBody
+ * 即文本和对象的转换
+ * 参考博客：https://www.cnblogs.com/weiyinfu/p/6861074.html
  */
 public interface HttpMessageConverter<T> {
 
@@ -39,6 +42,8 @@ public interface HttpMessageConverter<T> {
 	 * @param mediaType the media type to read (can be {@code null} if not specified);
 	 * typically the value of a {@code Content-Type} header.
 	 * @return {@code true} if readable; {@code false} otherwise
+	 *
+	 * 该转换器能否将请求内容转成Java对象
 	 */
 	boolean canRead(Class<?> clazz, @Nullable MediaType mediaType);
 
@@ -48,12 +53,16 @@ public interface HttpMessageConverter<T> {
 	 * @param mediaType the media type to write (can be {@code null} if not specified);
 	 * typically the value of an {@code Accept} header.
 	 * @return {@code true} if writable; {@code false} otherwise
+	 *
+	 * 该转换器能否将Java对象转成请求内容
 	 */
 	boolean canWrite(Class<?> clazz, @Nullable MediaType mediaType);
 
 	/**
 	 * Return the list of {@link MediaType} objects supported by this converter.
 	 * @return the list of supported media types
+	 *
+	 * 获取该转换器支持的MediaType
 	 */
 	List<MediaType> getSupportedMediaTypes();
 
@@ -65,6 +74,8 @@ public interface HttpMessageConverter<T> {
 	 * @return the converted object
 	 * @throws IOException in case of I/O errors
 	 * @throws HttpMessageNotReadableException in case of conversion errors
+	 *
+	 * 获取请求内容转为Java对象
 	 */
 	T read(Class<? extends T> clazz, HttpInputMessage inputMessage)
 			throws IOException, HttpMessageNotReadableException;
@@ -80,6 +91,8 @@ public interface HttpMessageConverter<T> {
 	 * @param outputMessage the message to write to
 	 * @throws IOException in case of I/O errors
 	 * @throws HttpMessageNotWritableException in case of conversion errors
+	 *
+	 * 将Java对象转换后写入返回内容
 	 */
 	void write(T t, @Nullable MediaType contentType, HttpOutputMessage outputMessage)
 			throws IOException, HttpMessageNotWritableException;

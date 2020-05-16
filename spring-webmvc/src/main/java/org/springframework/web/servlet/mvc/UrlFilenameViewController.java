@@ -126,7 +126,9 @@ public class UrlFilenameViewController extends AbstractUrlViewController {
 	protected String getViewNameForUrlPath(String uri) {
 		String viewName = this.viewNameCache.get(uri);
 		if (viewName == null) {
+			// 从请求中解析出viewName
 			viewName = extractViewNameFromUrlPath(uri);
+			// viewName 加上前后缀
 			viewName = postProcessViewName(viewName);
 			this.viewNameCache.put(uri, viewName);
 		}

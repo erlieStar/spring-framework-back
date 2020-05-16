@@ -100,6 +100,7 @@ public abstract class AbstractUrlViewController extends AbstractController {
 	 */
 	@Override
 	protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) {
+		// 获取请求路径
 		String lookupPath = getUrlPathHelper().getLookupPathForRequest(request);
 		String viewName = getViewNameForRequest(request);
 		if (logger.isDebugEnabled()) {

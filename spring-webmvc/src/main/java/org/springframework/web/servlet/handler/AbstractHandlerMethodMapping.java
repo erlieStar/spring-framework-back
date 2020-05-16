@@ -397,6 +397,7 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 				}
 			}
 			request.setAttribute(BEST_MATCHING_HANDLER_ATTRIBUTE, bestMatch.handlerMethod);
+			// 子类和父类都setAttribute类一堆值
 			handleMatch(bestMatch.mapping, lookupPath, request);
 			// 返回最佳匹配对应的处理器方法
 			return bestMatch.handlerMethod;

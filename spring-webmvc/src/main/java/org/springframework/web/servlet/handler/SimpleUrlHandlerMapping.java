@@ -54,6 +54,8 @@ import org.springframework.util.CollectionUtils;
  */
 public class SimpleUrlHandlerMapping extends AbstractUrlHandlerMapping {
 
+	// 保存 url -> handler 的映射关系
+	// value可以为bean的名字或者bean对象
 	private final Map<String, Object> urlMap = new LinkedHashMap<>();
 
 
