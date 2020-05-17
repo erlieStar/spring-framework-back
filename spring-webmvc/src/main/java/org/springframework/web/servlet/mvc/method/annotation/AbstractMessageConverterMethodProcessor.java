@@ -284,7 +284,7 @@ public abstract class AbstractMessageConverterMethodProcessor extends AbstractMe
 							inputMessage, outputMessage);
 					// 增强后输出值不为null
 					if (outputValue != null) {
-						// 当请求路径最后包含扩展名时，对返回的Content-Dispositioon响应头做特殊处理，避免出翔RFD攻击
+						// 当请求路径最后包含扩展名时，对返回的Content-Dispositioon响应头做特殊处理，避免出现RFD攻击
 						addContentDispositionHeader(inputMessage, outputMessage);
 						if (genericConverter != null) {
 							genericConverter.write(outputValue, declaredType, selectedMediaType, outputMessage);

@@ -36,6 +36,8 @@ public interface HandlerMethodReturnValueHandler {
 	 * @param returnType the method return type to check
 	 * @return {@code true} if this handler supports the supplied return type;
 	 * {@code false} otherwise
+	 *
+	 * 是否支持返回类型
 	 */
 	boolean supportsReturnType(MethodParameter returnType);
 
@@ -51,6 +53,8 @@ public interface HandlerMethodReturnValueHandler {
 	 * @param mavContainer the ModelAndViewContainer for the current request
 	 * @param webRequest the current request
 	 * @throws Exception if the return value handling results in an error
+	 *
+	 * 对返回类型进行处理
 	 */
 	void handleReturnValue(@Nullable Object returnValue, MethodParameter returnType,
 			ModelAndViewContainer mavContainer, NativeWebRequest webRequest) throws Exception;
