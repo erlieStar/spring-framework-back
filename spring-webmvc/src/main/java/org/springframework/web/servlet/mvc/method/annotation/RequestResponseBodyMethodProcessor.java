@@ -58,6 +58,10 @@ import org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolv
  * @author Rossen Stoyanchev
  * @author Juergen Hoeller
  * @since 3.1
+ *
+ * 处理@RequestBody注解的参数和@ReponseBody注解的返回值
+ * HandlerMethodArgumentResolver接口 supportsParameter resolveArgument
+ * HandlerMethodReturnValueHandler接口 supportsReturnType handleReturnValue
  */
 public class RequestResponseBodyMethodProcessor extends AbstractMessageConverterMethodProcessor {
 
@@ -156,6 +160,7 @@ public class RequestResponseBodyMethodProcessor extends AbstractMessageConverter
 		Assert.state(servletRequest != null, "No HttpServletRequest");
 		ServletServerHttpRequest inputMessage = new ServletServerHttpRequest(servletRequest);
 
+		// 用HttpMessageConverter将请求转为java对象
 		Object arg = readWithMessageConverters(inputMessage, parameter, paramType);
 		if (arg == null && checkRequired(parameter)) {
 			throw new HttpMessageNotReadableException("Required request body is missing: " +

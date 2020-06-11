@@ -1014,6 +1014,7 @@ public class DispatcherServlet extends FrameworkServlet {
 
 				// Actually invoke the handler.
 				// 执行handler的方法
+				// mv为null的时候表示不需要再执行后续的试图渲染过程，结果已经写入response中了
 				mv = ha.handle(processedRequest, response, mappedHandler.getHandler());
 
 				// 异步处理则直接返回

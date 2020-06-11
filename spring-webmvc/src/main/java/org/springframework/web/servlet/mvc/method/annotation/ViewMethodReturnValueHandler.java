@@ -43,6 +43,7 @@ public class ViewMethodReturnValueHandler implements HandlerMethodReturnValueHan
 
 	@Override
 	public boolean supportsReturnType(MethodParameter returnType) {
+		// returnType.getParameterType() 是 View接口的实现类
 		return View.class.isAssignableFrom(returnType.getParameterType());
 	}
 
@@ -54,6 +55,7 @@ public class ViewMethodReturnValueHandler implements HandlerMethodReturnValueHan
 			View view = (View) returnValue;
 			mavContainer.setView(view);
 			if (view instanceof SmartView && ((SmartView) view).isRedirectView()) {
+				// viewName前缀为 redirect: ，则表示是一个重定向请求，设置 redirectModelScenario = true
 				mavContainer.setRedirectModelScenario(true);
 			}
 		}
