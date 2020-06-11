@@ -1324,7 +1324,7 @@ public class DispatcherServlet extends FrameworkServlet {
 			return exMv;
 		}
 
-		// 处理器异常解析器，则原封不动抛出异常，交给Web框架处理
+		// 没有找到对应的处理器异常解析器，则原封不动抛出异常，交给Web框架处理
 		throw ex;
 	}
 
