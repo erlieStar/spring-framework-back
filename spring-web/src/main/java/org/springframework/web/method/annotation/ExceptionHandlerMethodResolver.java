@@ -41,6 +41,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
  * @author Rossen Stoyanchev
  * @author Juergen Hoeller
  * @since 3.1
+ *
+ * 博客解析地址
+ * 1. https://www.lagou.com/lgeduarticle/17879.html
+ * 2. https://www.cnblogs.com/lvbinbin2yujie/p/10574812.html
  */
 public class ExceptionHandlerMethodResolver {
 
@@ -51,8 +55,16 @@ public class ExceptionHandlerMethodResolver {
 			(AnnotationUtils.findAnnotation(method, ExceptionHandler.class) != null);
 
 
+	// 异常 -> 对应的处理方法
+	// ExceptionHandlerExceptionResolver类初始化的时候被初始化的
 	private final Map<Class<? extends Throwable>, Method> mappedMethods = new HashMap<>(16);
 
+	// 异常 -> 对应的处理方法
+	// 这个是基于mappedMethods又做了一次缓存
+	// 为什么要再做一次缓存呢？
+	// 是因为根据异常类型获取处理方法的时候，一个异常可能有多个处理方法，即一个异常会从mappedMethods中查出多个处理方法
+	// 最后返回的是继承关系最近的异常对应的处理方法，所以在查找的时候又做了一次缓存，避免每次查mappedMethods然后取最优值
+	// 从exceptionLookupCache中就可以查到最优的处理方法
 	private final Map<Class<? extends Throwable>, Method> exceptionLookupCache = new ConcurrentReferenceHashMap<>(16);
 
 
@@ -61,7 +73,9 @@ public class ExceptionHandlerMethodResolver {
 	 * @param handlerType the type to introspect
 	 */
 	public ExceptionHandlerMethodResolver(Class<?> handlerType) {
+		// 获取有@ExceptionHandler注解的所有方法
 		for (Method method : MethodIntrospector.selectMethods(handlerType, EXCEPTION_HANDLER_METHODS)) {
+			// 获取@ExceptionHandler指定的所有异常类型
 			for (Class<? extends Throwable> exceptionType : detectExceptionMappings(method)) {
 				addExceptionMapping(exceptionType, method);
 			}
@@ -72,6 +86,8 @@ public class ExceptionHandlerMethodResolver {
 	/**
 	 * Extract exception mappings from the {@code @ExceptionHandler} annotation first,
 	 * and then as a fallback from the method signature itself.
+	 *
+	 * 获取标注了@ExceptionHandler的方法上，@ExceptionHandler注解中指定的异常类型
 	 */
 	@SuppressWarnings("unchecked")
 	private List<Class<? extends Throwable>> detectExceptionMappings(Method method) {
@@ -169,6 +185,8 @@ public class ExceptionHandlerMethodResolver {
 			}
 		}
 		if (!matches.isEmpty()) {
+			// 存在多个匹配方法，进行排序
+			// 排序是按照继承顺序来（继承关系越靠近数值越小，当前类为0，顶级父类Throwable为int最大值）
 			matches.sort(new ExceptionDepthComparator(exceptionType));
 			return this.mappedMethods.get(matches.get(0));
 		}

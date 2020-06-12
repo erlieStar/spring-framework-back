@@ -92,6 +92,8 @@ public interface View {
 	 * @param request current HTTP request
 	 * @param response HTTP response we are building
 	 * @throws Exception if rendering failed
+	 *
+	 * 根据提供的Model渲染试图
 	 */
 	void render(@Nullable Map<String, ?> model, HttpServletRequest request, HttpServletResponse response)
 			throws Exception;

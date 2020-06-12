@@ -48,11 +48,14 @@ public abstract class AbstractHandlerExceptionResolver implements HandlerExcepti
 	/** Logger available to subclasses */
 	protected final Log logger = LogFactory.getLog(getClass());
 
+	// 默认优先级最低
 	private int order = Ordered.LOWEST_PRECEDENCE;
 
+	// 存放支持的handler
 	@Nullable
 	private Set<?> mappedHandlers;
 
+	// 存放支持的handler类型
 	@Nullable
 	private Class<?>[] mappedHandlerClasses;
 
@@ -170,6 +173,7 @@ public abstract class AbstractHandlerExceptionResolver implements HandlerExcepti
 			}
 			if (this.mappedHandlerClasses != null) {
 				for (Class<?> handlerClass : this.mappedHandlerClasses) {
+					// handlerClass是handler类型
 					if (handlerClass.isInstance(handler)) {
 						return true;
 					}

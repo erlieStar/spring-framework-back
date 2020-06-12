@@ -72,6 +72,9 @@ import org.springframework.web.servlet.support.RequestContextUtils;
  * @author Rossen Stoyanchev
  * @author Juergen Hoeller
  * @since 3.1
+ *
+ * 1. 处理被@Controller注解标记的类中被@ExceptionHandler注解标记的方法
+ * 2. 处理被@ControllerAdvice注解标记的类中被@ExceptionHandler注解标记的方法
  */
 public class ExceptionHandlerExceptionResolver extends AbstractHandlerMethodExceptionResolver
 		implements ApplicationContextAware, InitializingBean {
@@ -97,9 +100,11 @@ public class ExceptionHandlerExceptionResolver extends AbstractHandlerMethodExce
 	@Nullable
 	private ApplicationContext applicationContext;
 
+	// 被@Controller标记的类 -> ExceptionHandlerMethodResolver
 	private final Map<Class<?>, ExceptionHandlerMethodResolver> exceptionHandlerCache =
 			new ConcurrentHashMap<>(64);
 
+	// 被@ControllerAdvice注解标记的类 -> ExceptionHandlerMethodResolver
 	private final Map<ControllerAdviceBean, ExceptionHandlerMethodResolver> exceptionHandlerAdviceCache =
 			new LinkedHashMap<>();
 
@@ -273,6 +278,7 @@ public class ExceptionHandlerExceptionResolver extends AbstractHandlerMethodExce
 			logger.debug("Looking for exception mappings: " + getApplicationContext());
 		}
 
+		// 得到类上有@ControllerAdvice注解的Bean
 		List<ControllerAdviceBean> adviceBeans = ControllerAdviceBean.findAnnotatedBeans(getApplicationContext());
 		AnnotationAwareOrderComparator.sort(adviceBeans);
 
@@ -289,6 +295,7 @@ public class ExceptionHandlerExceptionResolver extends AbstractHandlerMethodExce
 					logger.info("Detected @ExceptionHandler methods in " + adviceBean);
 				}
 			}
+			// 父类.class.isAssignableFrom(子类.class)
 			// 如果增强器类型是ResponseBodyAdvice，则添加到响应体增强器列表中
 			if (ResponseBodyAdvice.class.isAssignableFrom(beanType)) {
 				this.responseBodyAdvice.add(adviceBean);
@@ -337,6 +344,8 @@ public class ExceptionHandlerExceptionResolver extends AbstractHandlerMethodExce
 	/**
 	 * Return the list of return value handlers to use including built-in and
 	 * custom handlers provided via {@link #setReturnValueHandlers}.
+	 *
+	 * 默认的HandlerMethodReturnValueHandler集合
 	 */
 	protected List<HandlerMethodReturnValueHandler> getDefaultReturnValueHandlers() {
 		List<HandlerMethodReturnValueHandler> handlers = new ArrayList<>();
@@ -377,6 +386,8 @@ public class ExceptionHandlerExceptionResolver extends AbstractHandlerMethodExce
 	protected ModelAndView doResolveHandlerMethodException(HttpServletRequest request,
 			HttpServletResponse response, @Nullable HandlerMethod handlerMethod, Exception exception) {
 
+		// 根据异常类型找到对应的ServletInvocableHandlerMethod
+		// ServletInvocableHandlerMethod 是对要执行的Handler及其Method的封装
 		ServletInvocableHandlerMethod exceptionHandlerMethod = getExceptionHandlerMethod(handlerMethod, exception);
 		if (exceptionHandlerMethod == null) {
 			return null;
@@ -472,6 +483,7 @@ public class ExceptionHandlerExceptionResolver extends AbstractHandlerMethodExce
 			}
 		}
 
+		// Controller级别的异常处理器处理不了的，会交由ControllerAdvice级别的异常处理器来处理
 		for (Map.Entry<ControllerAdviceBean, ExceptionHandlerMethodResolver> entry : this.exceptionHandlerAdviceCache.entrySet()) {
 			ControllerAdviceBean advice = entry.getKey();
 			if (advice.isApplicableToBeanType(handlerType)) {
