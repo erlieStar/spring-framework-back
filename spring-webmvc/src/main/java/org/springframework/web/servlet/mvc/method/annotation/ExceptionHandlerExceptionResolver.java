@@ -73,7 +73,7 @@ import org.springframework.web.servlet.support.RequestContextUtils;
  * @author Juergen Hoeller
  * @since 3.1
  *
- * 1. 处理被@Controller注解标记的类中被@ExceptionHandler注解标记的方法
+ * 1. 处理被@RequestMapping注解标记的类中被@ExceptionHandler注解标记的方法
  * 2. 处理被@ControllerAdvice注解标记的类中被@ExceptionHandler注解标记的方法
  */
 public class ExceptionHandlerExceptionResolver extends AbstractHandlerMethodExceptionResolver
@@ -100,7 +100,9 @@ public class ExceptionHandlerExceptionResolver extends AbstractHandlerMethodExce
 	@Nullable
 	private ApplicationContext applicationContext;
 
-	// 被@Controller标记的类 -> ExceptionHandlerMethodResolver
+	// 被@RequestMapping标记的类 -> ExceptionHandlerMethodResolver
+	// 当然这个被@RequestMapping标记的类的说法并不准确，因为如果你定义了自己的HandlerMapping，并且返回值是HandlerMethod
+	// 也会被放到这个缓存中
 	private final Map<Class<?>, ExceptionHandlerMethodResolver> exceptionHandlerCache =
 			new ConcurrentHashMap<>(64);
 
@@ -483,7 +485,7 @@ public class ExceptionHandlerExceptionResolver extends AbstractHandlerMethodExce
 			}
 		}
 
-		// Controller级别的异常处理器处理不了的，会交由ControllerAdvice级别的异常处理器来处理
+		// RequestMapping级别的异常处理器处理不了的，会交由ControllerAdvice级别的异常处理器来处理
 		for (Map.Entry<ControllerAdviceBean, ExceptionHandlerMethodResolver> entry : this.exceptionHandlerAdviceCache.entrySet()) {
 			ControllerAdviceBean advice = entry.getKey();
 			if (advice.isApplicableToBeanType(handlerType)) {
