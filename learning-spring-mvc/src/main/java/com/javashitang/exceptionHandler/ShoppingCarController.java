@@ -9,7 +9,6 @@ public class ShoppingCarController {
 
 	@RequestMapping("getCarInfo")
 	public String index() {
-		int sum = 10 / 0;
-		return "userInfo";
+		throw new UnauthorizedException();
 	}
 }

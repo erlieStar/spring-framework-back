@@ -1097,9 +1097,9 @@ public class DispatcherServlet extends FrameworkServlet {
 				mv = ((ModelAndViewDefiningException) exception).getModelAndView();
 			}
 			else {
-				// 其他异常类型，先获取处理器
+				// 其他异常类型，先获取解析器
 				Object handler = (mappedHandler != null ? mappedHandler.getHandler() : null);
-				// 通过异常处理器将异常解析为一个错误视图
+				// 通过异常解析器将异常解析为一个错误视图
 				mv = processHandlerException(request, response, handler, exception);
 				errorView = (mv != null);
 			}
