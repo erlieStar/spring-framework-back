@@ -52,6 +52,7 @@ public class DependencyDemo {
 		}
 		singletonObjects.put(beanName, object);
 		singletonsCurrentlyInCreation.remove(beanName);
+		earlySingletonObjects.remove(beanName);
 		return (T) object;
 	}
 
