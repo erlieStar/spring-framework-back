@@ -471,6 +471,7 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 			proxyFactory.setPreFiltered(true);
 		}
 
+		// 从这里能看出来是使用jdk还是cglib来实现动态代理
 		return proxyFactory.getProxy(getProxyClassLoader());
 	}
 
