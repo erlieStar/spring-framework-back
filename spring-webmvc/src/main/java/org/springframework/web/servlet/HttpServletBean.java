@@ -157,6 +157,7 @@ public abstract class HttpServletBean extends HttpServlet implements Environment
 				BeanWrapper bw = PropertyAccessorFactory.forBeanPropertyAccess(this);
 				ResourceLoader resourceLoader = new ServletContextResourceLoader(getServletContext());
 				bw.registerCustomEditor(Resource.class, new ResourceEditor(resourceLoader, getEnvironment()));
+				// bw封装了DispatcherServlet
 				initBeanWrapper(bw);
 				bw.setPropertyValues(pvs, true);
 			}
@@ -169,6 +170,7 @@ public abstract class HttpServletBean extends HttpServlet implements Environment
 		}
 
 		// Let subclasses do whatever initialization they like.
+		// 模板方法，让子类进行初始化
 		initServletBean();
 
 		if (logger.isDebugEnabled()) {

@@ -501,6 +501,7 @@ public class DispatcherServlet extends FrameworkServlet {
 	 *
 	 * 这个是初始化的时候调用的
 	 * 初始化DispatcherServlet类的成员变量
+	 * 容器刷新的时候开始初始化
 	 */
 	protected void initStrategies(ApplicationContext context) {
 		initMultipartResolver(context);
