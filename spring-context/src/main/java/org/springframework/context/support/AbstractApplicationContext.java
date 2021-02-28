@@ -528,6 +528,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 			// 创建beanFactory，并且进行初步初始化
 			// 加入内建的bean对象或者bean依赖
 			// 加入内建的非bean依赖
+			// 各种 Aware 接口的初始化在这里
 			prepareBeanFactory(beanFactory);
 
 			try {

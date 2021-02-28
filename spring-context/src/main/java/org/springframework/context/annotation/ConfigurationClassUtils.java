@@ -85,7 +85,7 @@ abstract class ConfigurationClassUtils {
 		}
 
 		AnnotationMetadata metadata;
-		// 是否是AnnotatedBeanDefinition
+		// 是否是被加了注解的类
 		if (beanDef instanceof AnnotatedBeanDefinition &&
 				className.equals(((AnnotatedBeanDefinition) beanDef).getMetadata().getClassName())) {
 			// Can reuse the pre-parsed metadata from the given BeanDefinition...
